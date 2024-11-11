@@ -3,19 +3,21 @@ package main
 import (
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 )
 
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Print(w, "Hello World Render")
 	})
 	err := http.ListenAndServe(":8080", nil)
 	if errors.Is(err, http.ErrServerClosed) {
-		fmt.Printf("server closed\n")
+		log.Printf("server closed\n")
 	} else if err != nil {
-		fmt.Printf("error starting server: %s\n", err)
+		log.Printf("error starting server: %s\n", err)
 		os.Exit(1)
 	}
+
 }
