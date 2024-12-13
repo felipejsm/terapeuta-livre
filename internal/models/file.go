@@ -1,13 +1,11 @@
 package models
 
-import "time"
-
 type File struct {
-	ID        uint `gorm:"primarykey"`
-	Name      string
-	Size      int64
-	CreatedAt time.Time
-	ObjectKey string
-	OwnerId   uint
-	OwnerType string
+	ID         uint `gorm:"primarykey"`
+	MetadataId int
+	FileData   []byte `gorm:"type:bytea"`
+}
+
+func (File) TableName() string {
+	return "tb_file"
 }

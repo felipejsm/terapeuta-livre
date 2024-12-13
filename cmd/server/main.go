@@ -4,6 +4,7 @@ import (
 	"errors"
 	"felipejsm/tp-admin/internal/config"
 	database "felipejsm/tp-admin/internal/db"
+	repository "felipejsm/tp-admin/internal/repositories"
 	"fmt"
 	"log"
 	"net/http"
@@ -14,8 +15,15 @@ func main() {
 	config.LoadEnv()
 	database.InitDB()
 	http.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
-		database := config.GetEnv("DATABASE_URL", "default_value")
-		fmt.Print(w, database)
+		datab := config.GetEnv("DATABASE_URL", "default_value")
+		patientRep := repository.PatientRepository{DB: database.DB}
+		patients, err := patientRep.FindAllByTherapistId("1")
+		if err != nil {
+			fmt.Println("Erro ao buscar pacientes:", err)
+		} else {
+			fmt.Printf("Pacientes encontrados: %v\n", patients)
+		}
+		fmt.Print(w, datab)
 	})
 	sqlDB, _ := database.DB.DB()
 	err := http.ListenAndServe(":8080", nil)
