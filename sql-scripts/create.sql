@@ -1,6 +1,8 @@
 -- Remover tabelas existentes, incluindo dependências
 DROP TABLE IF EXISTS tb_file_metadata CASCADE;
 DROP TABLE IF EXISTS tb_file CASCADE;
+DROP TABLE IF EXISTS tb_patient;
+DROP TABLE IF EXISTS tb_therapist;
 
 -- Criação da tabela de arquivos
 CREATE TABLE tb_file_metadata (
@@ -26,4 +28,12 @@ CREATE TABLE tb_patient (
     email VARCHAR(100) UNIQUE NOT NULL,
     therapist_id INT NOT NULL,
     CONSTRAINT fk_therapist_patient FOREIGN KEY (therapist_id) REFERENCES tb_therapist(id) ON DELETE CASCADE
+);
+
+CREATE TABLE tb_therapist (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    login VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL
 );

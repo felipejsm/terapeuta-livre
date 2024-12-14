@@ -20,3 +20,13 @@ func PatientToDto(patient models.Patient, files []models.FileMetadata) PatientDt
 	}
 
 }
+
+func DtoToPatient(patientDto PatientDto) (models.Patient, []models.FileMetadata) {
+	var patient = models.Patient{
+		ID:          patientDto.ID,
+		Name:        patientDto.Name,
+		Email:       patientDto.Email,
+		TherapistId: patientDto.IdTherapist,
+	}
+	return patient, patientDto.Files
+}
