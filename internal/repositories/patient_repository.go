@@ -10,6 +10,10 @@ type PatientRepository struct {
 	DB *gorm.DB
 }
 
+func NewPatientRepository(db *gorm.DB) *PatientRepository {
+	return &PatientRepository{DB: db}
+}
+
 func (r *PatientRepository) FindAllByTherapistId(therapistId int) ([]models.Patient, error) {
 	var patients []models.Patient
 	result := r.DB.Raw("SELECT * FROM tb_patient WHERE id_therapist = ?", therapistId).Scan(&patients)
