@@ -1,35 +1,32 @@
-package main
+package handlers
 
-import (
-	"html/template"
+import(
 	"net/http"
+	"text/template"
+	"felipejsm/tp-admin/internal/services"
 )
 
-type Patient struct {
-	PatientHeader []Header
-	PatientRow    []Row
-}
-type Header struct {
-	Patient string
-	Status  string
-	Date    string
-}
-type Row struct {
-	Name   string
-	Email  string
-	Status template.HTML
-	Date   string
+type PatientHandler struct {
+	Service *services.PatientService
+	Templates *template.Template
 }
 
-func main() {
-	indexTmpl := template.Must(template.ParseFiles("index.html"))
-	layoutTmpl := template.Must(template.ParseFiles("template.html"))
+func NewPatientHandler(service *services.PatientService, templates *template.Template) *PatientHandler {
+	return &PatientHandler{
+		Service: services,
+		Templates: templates
+	}
+}
 
-	fs := http.FileServer(http.Dir("./assets"))
-	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
-	http.HanleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		indexTmpl.Execute(w, nil)
-	})
-	http.ListenAndServe(":21067", nil)
+func (h *PatientHandler) HandleGetPatient(w http.ResponseWriter, r *http.Request) {
+	data,  err := h.Service.GetPatientDetail(1)
+	if err != nil {
+		http.Error(w, "Paciente não encontrado", http.StatusNotFound)
+        return
+	}
+	if err := h.Templates.ExecuteTemplate(w, "patient_detail.html", data); err != nil {
+        http.Error(w, "Erro ao renderizar o template", http.StatusInternalServerError)
+        return
+    }
 
 }
