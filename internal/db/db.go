@@ -10,14 +10,12 @@ import (
 	"gorm.io/gorm"
 )
 
-var DB *gorm.DB
-
-func InitDB() {
+func InitDB() *gorm.DB {
 	config.LoadEnv()
 	dsn := config.GetEnv("DATABASE_URL", "dafault")
 	var err error
 
-	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	DB, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
 		log.Fatalf("[Error] database connection failed: %v", err)
@@ -32,4 +30,5 @@ func InitDB() {
 	sqlDB.SetConnMaxLifetime(30 * time.Minute)
 
 	log.Println("[InitDB] DB Connection Succesfully obtained.")
+	return DB
 }

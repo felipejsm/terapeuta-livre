@@ -1,32 +1,32 @@
 package handlers
 
-import(
-	"net/http"
-	"text/template"
+import (
 	"felipejsm/tp-admin/internal/services"
+	"html/template"
+	"net/http"
 )
 
 type PatientHandler struct {
-	Service *services.PatientService
+	Service   *services.PatientService
 	Templates *template.Template
 }
 
 func NewPatientHandler(service *services.PatientService, templates *template.Template) *PatientHandler {
 	return &PatientHandler{
-		Service: services,
-		Templates: templates
+		Service:   service,
+		Templates: templates,
 	}
 }
 
 func (h *PatientHandler) HandleGetPatient(w http.ResponseWriter, r *http.Request) {
-	data,  err := h.Service.GetPatientDetail(1)
+	data, err := h.Service.GetPatientDetail(1, 2)
 	if err != nil {
 		http.Error(w, "Paciente não encontrado", http.StatusNotFound)
-        return
+		return
 	}
 	if err := h.Templates.ExecuteTemplate(w, "patient_detail.html", data); err != nil {
-        http.Error(w, "Erro ao renderizar o template", http.StatusInternalServerError)
-        return
-    }
+		http.Error(w, "Erro ao renderizar o template", http.StatusInternalServerError)
+		return
+	}
 
 }

@@ -33,13 +33,13 @@ func (r *PatientRepository) FindFileByMetadataId(metadataId int) (models.File, e
 	return file, result.Error
 }
 
-func (r *PatientRepository) FindByIdAndTherapistId(id string, therapistId string) (models.Patient, error) {
+func (r *PatientRepository) FindByIdAndTherapistId(id int, therapistId int) (models.Patient, error) {
 	var patient models.Patient
 	result := r.DB.Raw("SELECT * FROM tb_patient WHERE id = ? AND therapist_id = ?", id, therapistId)
 	return patient, result.Error
 }
 
-func (r *PatientRepository) FindAllFilesByPatientId(id string) ([]models.FileMetadata, error) {
+func (r *PatientRepository) FindAllFilesByPatientId(id uint) ([]models.FileMetadata, error) {
 	var files []models.FileMetadata
 	result := r.DB.Raw("SELECT * FROM tb_file_metadata WHERE owner_id = ?)", id).Scan(&files)
 	return files, result.Error

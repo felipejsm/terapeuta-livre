@@ -10,8 +10,8 @@ type PatientDto struct {
 	Files       []models.FileMetadata `json:"files"`
 }
 
-func PatientToDto(patient models.Patient, files []models.FileMetadata) PatientDto {
-	return PatientDto{
+func PatientToDto(patient models.Patient, files []models.FileMetadata) *PatientDto {
+	return &PatientDto{
 		ID:          patient.ID,
 		Name:        patient.Name,
 		Email:       patient.Email,
