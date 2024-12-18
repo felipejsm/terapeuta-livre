@@ -7,15 +7,15 @@
                 <img src="https://via.placeholder.com/100" alt="Foto do Paciente"
                   class="w-24 h-24 rounded-full border-2 border-blue-400">
                 <div class="ml-4">
-                  <h2 class="text-2xl font-semibold text-gray-800">Nome do Paciente</h2>
+                  <h2 class="text-2xl font-semibold text-gray-800">{{.Name}}</h2>
                   <p class="text-sm text-gray-600">Paciente desde 2021</p>
-                  <p class="text-sm text-gray-600">ID: 123456</p>
+                  <p class="text-sm text-gray-600">{{.ID}}</p>
                 </div>
               </div>
 
               <!-- Seção de Informações Básicas -->
               <div
-                x-data="{ editing: false, idade: '30 anos', genero: 'Masculino', telefone: '(11) 98765-4321', email: 'paciente@exemplo.com' }"
+                x-data="{ editing: false, idade: '30 anos', genero: 'Masculino', telefone: '(11) 98765-4321', email: {{.Email}} }"
                 class="relative mb-6">
                 <button @click="editing = !editing"
                   class="absolute top-0 right-0 p-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-full active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"

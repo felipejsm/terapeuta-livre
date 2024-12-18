@@ -37,3 +37,39 @@ CREATE TABLE tb_therapist (
     login VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL
 );
+
+
+INSERT INTO tb_therapist (name, email, login, password)
+VALUES 
+    ('Dr. João Silva', 'joao.silva@clinic.com', 'joaosilva', 'hashed_password_1'),
+    ('Dra. Maria Oliveira', 'maria.oliveira@clinic.com', 'mariaoliveira', 'hashed_password_2'),
+    ('Dr. Pedro Santos', 'pedro.santos@clinic.com', 'pedrosantos', 'hashed_password_3'),
+    ('Dra. Ana Costa', 'ana.costa@clinic.com', 'anacosta', 'hashed_password_4'),
+    ('Dr. Lucas Almeida', 'lucas.almeida@clinic.com', 'lucasalmeida', 'hashed_password_5');
+
+
+INSERT INTO tb_patient (name, email, therapist_id)
+VALUES 
+    ('Carlos Silva', 'carlos.silva@patient.com', 1),
+    ('Fernanda Lima', 'fernanda.lima@patient.com', 2),
+    ('Bruno Rocha', 'bruno.rocha@patient.com', 3),
+    ('Juliana Mendes', 'juliana.mendes@patient.com', 4),
+    ('Rafael Pereira', 'rafael.pereira@patient.com', 5);
+
+
+INSERT INTO tb_file_metadata (file_name, object_key, extension, owner_id, file_size, owner_type)
+VALUES 
+    ('relatorio_carlos.pdf', 'files/carlos_silva/relatorio_carlos.pdf', '.pdf', 1, 2048, 'patient'),
+    ('exame_fernanda.pdf', 'files/fernanda_lima/exame_fernanda.pdf', '.pdf', 2, 4096, 'patient'),
+    ('receita_bruno.docx', 'files/bruno_rocha/receita_bruno.docx', '.docx', 3, 1024, 'patient'),
+    ('relatorio_juliana.pdf', 'files/juliana_mendes/relatorio_juliana.pdf', '.pdf', 4, 2048, 'patient'),
+    ('exame_rafael.pdf', 'files/rafael_pereira/exame_rafael.pdf', '.pdf', 5, 5120, 'patient');
+
+
+INSERT INTO tb_file (metadata_id, file_data)
+VALUES 
+    (1, decode('255044462d312e350a25e2e3cf...', 'hex')), -- Representação fictícia de PDF
+    (2, decode('255044462d312e350a25e2e3cf...', 'hex')),
+    (3, decode('504b03040a00000000008...', 'hex')),       -- Representação fictícia de DOCX
+    (4, decode('255044462d312e350a25e2e3cf...', 'hex')),
+    (5, decode('255044462d312e350a25e2e3cf...', 'hex'));

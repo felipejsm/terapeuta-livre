@@ -39,9 +39,9 @@
 
         <div class="container px-6 mx-auto grid" x-data="{ 
             files: [
-                { id: 1, name: 'Relatório_Consulta_01.pdf', lastUpdated: '2024-10-15' },
-                { id: 2, name: 'Exames_Laboratoriais.pdf', lastUpdated: '2024-11-01' },
-                { id: 3, name: 'Receita_Medicamento.docx', lastUpdated: '2024-10-20' }
+            {{range .}}
+                { id: {{.ID}}, name: {{.FileName}}, lastUpdated: '2024-10-15' }
+             {{end}}
             ]
         }">
           <div class="my-4 px-4 py-2 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
