@@ -22,3 +22,9 @@ func (r *TherapistRepository) FindAllPatientsById(id int) ([]models.Patient, err
 	return patients, result.Error
 
 }
+
+func (r *TherapistRepository) FindById(id int) (models.Therapist, error) {
+	var therapist models.Therapist
+	result := r.DB.Raw("SELECT * FROM tb_therapist WHERE id = ?", id).Scan(&therapist)
+	return therapist, result.Error
+}

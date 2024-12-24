@@ -10,6 +10,20 @@ type PatientDto struct {
 	Files       []models.FileMetadata `json:"files"`
 }
 
+func PatientsToDtos(patients []models.Patient) []PatientDto {
+	var patientsDtos []PatientDto
+	for _, v := range patients {
+		patientDto := PatientDto{
+			ID:          v.ID,
+			Name:        v.Name,
+			Email:       v.Email,
+			IdTherapist: v.TherapistId,
+			Files:       nil,
+		}
+		patientsDtos = append(patientsDtos, patientDto)
+	}
+	return patientsDtos
+}
 func PatientToDto(patient models.Patient, files []models.FileMetadata) *PatientDto {
 	return &PatientDto{
 		ID:          patient.ID,
