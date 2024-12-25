@@ -23,7 +23,7 @@ func (s *TherapistService) GetTherapistDetail(id int) (*dtos.TherapistDto, error
 	therapist, err := s.Repo.FindById(id)
 	files, err = s.Repo.FindAllFilesByTherapistId(id)
 	patients, err = s.Repo.FindAllPatientsById(id)
-	patientsDto := dtos.PatientDto(patients)
+	patientsDto := dtos.PatientsToDtos(patients)
 	response := dtos.TherapistToDto(therapist, patientsDto, files)
-	return therapist, err
+	return response, err
 }
