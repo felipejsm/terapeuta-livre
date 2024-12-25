@@ -1,7 +1,9 @@
 package db
 
 import (
+	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"felipejsm/tp-admin/internal/config"
@@ -12,7 +14,8 @@ import (
 
 func InitDB() *gorm.DB {
 	config.LoadEnv()
-	dsn := config.GetEnv("DATABASE_URL", "dafault")
+	fmt.Println("DATABASE_URL:", os.Getenv("DATABASE_URL"))
+	dsn := config.GetEnv("DATABASE_URL", "default")
 	var err error
 
 	DB, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})

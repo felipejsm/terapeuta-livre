@@ -14,37 +14,66 @@ import (
 )
 
 func main() {
+	// Inicializa o banco de dados
 	sqlDB := database.InitDB()
-	// repository
+
+	// Repositórios
 	repo := repository.NewPatientRepository(sqlDB)
+	therapistRepo := repository.NewTherapistRepository(sqlDB)
 
-	therapistRepo := repository.TherapistRepository(sqlDB)
-
-	//services
-	service := services.NewPatientService(repo)
+	// Serviços
+	patientService := services.NewPatientService(repo)
 	therapistService := services.NewTherapistService(therapistRepo)
 
-	//template
+	// Carrega os templates
 	templates := template.Must(template.ParseGlob("internal/templates/*.html"))
 
-	//handles
-	handle := handlers.NewPatientHandler(service, templates)
+	// Handlers
+	patientHandler := handlers.NewPatientHandler(patientService, templates)
 	therapistHandler := handlers.NewTherapistHandler(therapistService, templates)
+	layoutHandler := handlers.NewLayoutHandler(templates)
 
-	layoutHandler := handlers.LayoutHandler(templates)
+	// Roteamento
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/" {
+			err := templates.ExecuteTemplate(w, "layout.html", nil)
+			if err != nil {
+				http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
+		
+			}
+			layoutHandler.HandleLayout(w, r)
+			return
+		}
 
-	http.HandleFunc("/patients", handle.HandleGetPatient)
+		// Se não for "/", retorna erro 404
+		http.NotFound(w, r)
+	})
 
-	http.HandleFunc("/therapist", therapistHandler.HandleGetTherapist)
+	http.HandleFunc("/patients", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodGet {
+			patientHandler.HandleGetPatient(w, r)
+		} else {
+			http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
+		}
+	})
 
-	http.HandleFunc("/", layoutHandler.HandleLayout)
+	http.HandleFunc("/therapist", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodGet {
+			therapistHandler.HandleGetTherapist(w, r)
+		} else {
+			http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
+		}
+	})
+
+	// Inicia o servidor
+	fmt.Println("Server start listening @ port 8080")
 	err := http.ListenAndServe(":8080", nil)
 
+	// Tratamento de erros do servidor
 	if errors.Is(err, http.ErrServerClosed) {
 		log.Printf("server closed\n")
 	} else if err != nil {
 		log.Printf("error starting server: %s\n", err)
 		os.Exit(1)
 	}
-	fmt.Println("Server start listening @ port 8080")
 }

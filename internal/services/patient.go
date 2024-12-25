@@ -28,5 +28,3 @@ func (s *PatientService) GetPatientDetail(patientId int, therapistId int) (*dtos
 	response := dtos.PatientToDto(patient, files)
 	return response, nil
 }
-
-func (s *PatientService) GetAllPatients(therapistId int) *[]dtos.TherapistDto

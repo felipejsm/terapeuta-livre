@@ -10,6 +10,9 @@ type TherapistRepository struct {
 	DB *gorm.DB
 }
 
+func NewTherapistRepository(db *gorm.DB) *TherapistRepository {
+	return &TherapistRepository{DB: db}
+}
 func (r *TherapistRepository) FindAllFilesByTherapistId(id int) ([]models.FileMetadata, error) {
 	var files []models.FileMetadata
 	result := r.DB.Raw("SELECT * FROM tb_file_metadata WHERE owner_id = ?", id).Scan(&files)

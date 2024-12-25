@@ -41,6 +41,6 @@ func (r *PatientRepository) FindByIdAndTherapistId(id int, therapistId int) (mod
 
 func (r *PatientRepository) FindAllFilesByPatientId(id uint) ([]models.FileMetadata, error) {
 	var files []models.FileMetadata
-	result := r.DB.Raw("SELECT * FROM tb_file_metadata WHERE owner_id = ?)", id).Scan(&files)
+	result := r.DB.Raw("SELECT * FROM tb_file_metadata WHERE owner_id = ?", id).Scan(&files)
 	return files, result.Error
 }

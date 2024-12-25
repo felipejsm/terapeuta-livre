@@ -41,9 +41,9 @@ CREATE TABLE tb_therapist (
 
 INSERT INTO tb_therapist (name, email, login, password)
 VALUES 
-    ('Dr. João Silva', 'joao.silva@clinic.com', 'joaosilva', 'hashed_password_1'),
-    ('Dra. Maria Oliveira', 'maria.oliveira@clinic.com', 'mariaoliveira', 'hashed_password_2'),
-    ('Dr. Pedro Santos', 'pedro.santos@clinic.com', 'pedrosantos', 'hashed_password_3'),
+    ('Dr. João Silva', 'joao.silva@clinic.com', 'joaosilva', '1234'),
+    ('Dra. Maria Oliveira', 'maria.oliveira@clinic.com', 'mariaoliveira', '1234'),
+    ('Dr. Pedro Santos', 'pedro.santos@clinic.com', 'pedrosantos', '1234'),
     ('Dra. Ana Costa', 'ana.costa@clinic.com', 'anacosta', 'hashed_password_4'),
     ('Dr. Lucas Almeida', 'lucas.almeida@clinic.com', 'lucasalmeida', 'hashed_password_5');
 
