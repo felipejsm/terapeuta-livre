@@ -18,17 +18,26 @@ func main() {
 	// repository
 	repo := repository.NewPatientRepository(sqlDB)
 
+	therapistRepo := repository.TherapistRepository(sqlDB)
+
 	//services
 	service := services.NewPatientService(repo)
+	therapistService := services.NewTherapistService(therapistRepo)
 
 	//template
 	templates := template.Must(template.ParseGlob("internal/templates/*.html"))
 
 	//handles
 	handle := handlers.NewPatientHandler(service, templates)
+	therapistHandler := handlers.NewTherapistHandler(therapistService, templates)
+
+	layoutHandler := handlers.LayoutHandler(templates)
 
 	http.HandleFunc("/patients", handle.HandleGetPatient)
 
+	http.HandleFunc("/therapist", therapistHandler.HandleGetTherapist)
+
+	http.HandleFunc("/", layoutHandler.HandleLayout)
 	err := http.ListenAndServe(":8080", nil)
 
 	if errors.Is(err, http.ErrServerClosed) {
