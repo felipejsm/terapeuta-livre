@@ -27,6 +27,9 @@ func main() {
 
 	// Carrega os templates
 	templates := template.Must(template.ParseGlob("internal/templates/*.html"))
+	// Configuração de arquivos estáticos
+	fs := http.FileServer(http.Dir("./web/static"))
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	// Handlers
 	patientHandler := handlers.NewPatientHandler(patientService, templates)
@@ -34,37 +37,11 @@ func main() {
 	layoutHandler := handlers.NewLayoutHandler(templates)
 
 	// Roteamento
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path == "/" {
-			err := templates.ExecuteTemplate(w, "layout.html", nil)
-			if err != nil {
-				http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
-		
-			}
-			layoutHandler.HandleLayout(w, r)
-			return
-		}
+	http.HandleFunc("/", layoutHandler.HandleLayout)
 
-		// Se não for "/", retorna erro 404
-		http.NotFound(w, r)
-	})
+	http.HandleFunc("/patients", patientHandler.HandleGetPatient)
 
-	http.HandleFunc("/patients", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method == http.MethodGet {
-			patientHandler.HandleGetPatient(w, r)
-		} else {
-			http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
-		}
-	})
-
-	http.HandleFunc("/therapist", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method == http.MethodGet {
-			therapistHandler.HandleGetTherapist(w, r)
-		} else {
-			http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
-		}
-	})
-
+	http.HandleFunc("/therapist", therapistHandler.HandleGetTherapist)
 	// Inicia o servidor
 	fmt.Println("Server start listening @ port 8080")
 	err := http.ListenAndServe(":8080", nil)

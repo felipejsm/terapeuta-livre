@@ -19,13 +19,19 @@ func NewTherapistHandler(service *services.TherapistService, templates *template
 }
 
 func (h *TherapistHandler) HandleGetTherapist(w http.ResponseWriter, r *http.Request) {
-	data, err := h.Service.GetTherapistDetail(1)
-	if err != nil {
-		http.Error(w, "Terapeuta não encontrado", http.StatusNotFound)
-		return
-	}
-	if err := h.Templates.ExecuteTemplate(w, "therapist.html", data); err != nil {
-		http.Error(w, "Erro ao renderizar o template", http.StatusInternalServerError)
-		return
+	if r.Method == http.MethodGet {
+
+		data, err := h.Service.GetTherapistDetail(1)
+		if err != nil {
+			http.Error(w, "Terapeuta não encontrado", http.StatusNotFound)
+			return
+		}
+		err = h.Templates.ExecuteTemplate(w, "therapist.html", data)
+		if err != nil {
+			http.Error(w, "Erro ao renderizar o template", http.StatusInternalServerError)
+
+		}
+	} else {
+		http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
 	}
 }
