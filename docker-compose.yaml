@@ -26,4 +26,5 @@ services:
       POSTGRES_PASSWORD: 1234 # The PostgreSQL password (useful to connect to the database)
       POSTGRES_DB: tpldb # The PostgreSQL default database (automatically created at first launch)
     volumes:
+      #- ./sql-scripts:/docker-entrypoint-initdb.d
       - ./sql-scripts/create.sql:/docker-entrypoint-initdb.d/create.sql

@@ -26,7 +26,10 @@ func (h *TherapistHandler) HandleGetTherapist(w http.ResponseWriter, r *http.Req
 			http.Error(w, "Terapeuta não encontrado", http.StatusNotFound)
 			return
 		}
-		err = h.Templates.ExecuteTemplate(w, "therapist.html", data)
+		err = h.Templates.ExecuteTemplate(w, "layout.html", map[string]interface{}{
+			"Content": "threapist.html",
+			"Data":    data,
+		})
 		if err != nil {
 			http.Error(w, "Erro ao renderizar o template", http.StatusInternalServerError)
 

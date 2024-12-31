@@ -43,8 +43,8 @@ func main() {
 
 	http.HandleFunc("/therapist", therapistHandler.HandleGetTherapist)
 	// Inicia o servidor
-	fmt.Println("Server start listening @ port 8080")
-	err := http.ListenAndServe(":8080", nil)
+	fmt.Println("Server start listening @ port 8081")
+	err := http.ListenAndServe(":8081", nil)
 
 	// Tratamento de erros do servidor
 	if errors.Is(err, http.ErrServerClosed) {

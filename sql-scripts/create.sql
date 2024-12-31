@@ -1,10 +1,28 @@
 -- Remover tabelas existentes, incluindo dependências
-DROP TABLE IF EXISTS tb_file_metadata CASCADE;
-DROP TABLE IF EXISTS tb_file CASCADE;
+DROP TABLE IF EXISTS tb_file;
+DROP TABLE IF EXISTS tb_file_metadata;
 DROP TABLE IF EXISTS tb_patient;
 DROP TABLE IF EXISTS tb_therapist;
 
--- Criação da tabela de arquivos
+-- Criação da tabela de terapeutas (precisa vir antes de tb_patient)
+CREATE TABLE tb_therapist (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    login VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+
+-- Criação da tabela de pacientes
+CREATE TABLE tb_patient (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    therapist_id INT NOT NULL,
+    CONSTRAINT fk_therapist_patient FOREIGN KEY (therapist_id) REFERENCES tb_therapist(id) ON DELETE CASCADE
+);
+
+-- Criação da tabela de metadados de arquivos
 CREATE TABLE tb_file_metadata (
     id SERIAL PRIMARY KEY,
     file_name VARCHAR(100) NOT NULL,
@@ -16,60 +34,41 @@ CREATE TABLE tb_file_metadata (
     owner_type VARCHAR(10) NOT NULL
 );
 
+-- Criação da tabela de arquivos (referência a tb_file_metadata)
 CREATE TABLE tb_file (
     id SERIAL PRIMARY KEY,
     metadata_id INTEGER REFERENCES tb_file_metadata(id) ON DELETE CASCADE,
     file_data BYTEA NOT NULL
-)
-
-CREATE TABLE tb_patient (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    therapist_id INT NOT NULL,
-    CONSTRAINT fk_therapist_patient FOREIGN KEY (therapist_id) REFERENCES tb_therapist(id) ON DELETE CASCADE
 );
 
-CREATE TABLE tb_therapist (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    login VARCHAR(50) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL
-);
-
-
-INSERT INTO tb_therapist (name, email, login, password)
-VALUES 
-    ('Dr. João Silva', 'joao.silva@clinic.com', 'joaosilva', '1234'),
-    ('Dra. Maria Oliveira', 'maria.oliveira@clinic.com', 'mariaoliveira', '1234'),
-    ('Dr. Pedro Santos', 'pedro.santos@clinic.com', 'pedrosantos', '1234'),
+-- Inserir terapeutas
+INSERT INTO tb_therapist (name, email, login, password) VALUES
+    ('Dr. João Silva', 'joao.silva@clinic.com', 'joaosilva', 'hashed_password_1'),
+    ('Dra. Maria Oliveira', 'maria.oliveira@clinic.com', 'mariaoliveira', 'hashed_password_2'),
+    ('Dr. Pedro Santos', 'pedro.santos@clinic.com', 'pedrosantos', 'hashed_password_3'),
     ('Dra. Ana Costa', 'ana.costa@clinic.com', 'anacosta', 'hashed_password_4'),
     ('Dr. Lucas Almeida', 'lucas.almeida@clinic.com', 'lucasalmeida', 'hashed_password_5');
 
-
-INSERT INTO tb_patient (name, email, therapist_id)
-VALUES 
+-- Inserir pacientes
+INSERT INTO tb_patient (name, email, therapist_id) VALUES
     ('Carlos Silva', 'carlos.silva@patient.com', 1),
     ('Fernanda Lima', 'fernanda.lima@patient.com', 2),
     ('Bruno Rocha', 'bruno.rocha@patient.com', 3),
     ('Juliana Mendes', 'juliana.mendes@patient.com', 4),
     ('Rafael Pereira', 'rafael.pereira@patient.com', 5);
 
-
-INSERT INTO tb_file_metadata (file_name, object_key, extension, owner_id, file_size, owner_type)
-VALUES 
+-- Inserir metadados de arquivos
+INSERT INTO tb_file_metadata (file_name, object_key, extension, owner_id, file_size, owner_type) VALUES
     ('relatorio_carlos.pdf', 'files/carlos_silva/relatorio_carlos.pdf', '.pdf', 1, 2048, 'patient'),
     ('exame_fernanda.pdf', 'files/fernanda_lima/exame_fernanda.pdf', '.pdf', 2, 4096, 'patient'),
     ('receita_bruno.docx', 'files/bruno_rocha/receita_bruno.docx', '.docx', 3, 1024, 'patient'),
     ('relatorio_juliana.pdf', 'files/juliana_mendes/relatorio_juliana.pdf', '.pdf', 4, 2048, 'patient'),
     ('exame_rafael.pdf', 'files/rafael_pereira/exame_rafael.pdf', '.pdf', 5, 5120, 'patient');
 
-
-INSERT INTO tb_file (metadata_id, file_data)
-VALUES 
-    (1, decode('255044462d312e350a25e2e3cf...', 'hex')), -- Representação fictícia de PDF
-    (2, decode('255044462d312e350a25e2e3cf...', 'hex')),
-    (3, decode('504b03040a00000000008...', 'hex')),       -- Representação fictícia de DOCX
-    (4, decode('255044462d312e350a25e2e3cf...', 'hex')),
-    (5, decode('255044462d312e350a25e2e3cf...', 'hex'));
+-- Inserir arquivos (conteúdo fictício em formato hexadecimal)
+INSERT INTO tb_file (metadata_id, file_data) VALUES
+    (1, decode('255044462d312e350a25e2e3cf...', 'hex')), -- PDF fictício
+    (2, decode('255044462d312e350a25e2e3cf...', 'hex')), -- PDF fictício
+    (3, decode('504b0304140006000800000021...', 'hex')), -- DOCX fictício
+    (4, decode('255044462d312e350a25e2e3cf...', 'hex')), -- PDF fictício
+    (5, decode('255044462d312e350a25e2e3cf...', 'hex')); -- PDF fictício
