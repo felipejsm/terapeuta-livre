@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"felipejsm/tp-admin/internal/services"
+	"fmt"
 	"html/template"
 	"net/http"
 )
@@ -19,7 +20,8 @@ func NewPatientHandler(service *services.PatientService, templates *template.Tem
 }
 
 func (h *PatientHandler) HandleGetPatient(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodGet {
+	fmt.Printf("Template @ Patient -> %s", h.Templates.Name())
+	if r.Method == http.MethodGet && r.URL.Path == "/patients" {
 		//pegar ids da sessão ou req
 		data, err := h.Service.GetPatientDetail(1, 2)
 		if err != nil {

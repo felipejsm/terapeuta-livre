@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"felipejsm/tp-admin/internal/services"
+	"fmt"
 	"html/template"
 	"net/http"
 )
@@ -19,15 +20,17 @@ func NewTherapistHandler(service *services.TherapistService, templates *template
 }
 
 func (h *TherapistHandler) HandleGetTherapist(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodGet {
+	fmt.Printf("Template @ Therapist -> %s", h.Templates.Name())
+	if r.Method == http.MethodGet && r.URL.Path == "/therapist" {
 
 		data, err := h.Service.GetTherapistDetail(1)
 		if err != nil {
 			http.Error(w, "Terapeuta não encontrado", http.StatusNotFound)
 			return
 		}
+		fmt.Printf("Renderizando layout com Content: %s e Data: %+v\n", "therapist.html", data)
 		err = h.Templates.ExecuteTemplate(w, "layout.html", map[string]interface{}{
-			"Content": "threapist.html",
+			"Content": "therapist.html",
 			"Data":    data,
 		})
 		if err != nil {

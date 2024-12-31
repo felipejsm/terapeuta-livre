@@ -27,6 +27,9 @@ func main() {
 
 	// Carrega os templates
 	templates := template.Must(template.ParseGlob("internal/templates/*.html"))
+	for _, tmplName := range templates.Templates() {
+		fmt.Printf("Template carregado: %s\n", tmplName.Name())
+	}
 	// Configuração de arquivos estáticos
 	fs := http.FileServer(http.Dir("./web/static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
