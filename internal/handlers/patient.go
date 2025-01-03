@@ -23,13 +23,15 @@ func (h *PatientHandler) HandleGetPatient(w http.ResponseWriter, r *http.Request
 	fmt.Printf("Template @ Patient -> %s", h.Templates.Name())
 	if r.Method == http.MethodGet && r.URL.Path == "/patients" {
 		//pegar ids da sessão ou req
-		data, err := h.Service.GetPatientDetail(1, 2)
+		data, err := h.Service.GetPatientDetail(1, 1)
+		fmt.Println("Dados patients: Name ->  " + data.Name)
 		if err != nil {
 			http.Error(w, "Paciente não encontrado", http.StatusNotFound)
 			return
 		}
+		templateName := "patients.html"
 		err = h.Templates.ExecuteTemplate(w, "layout.html", map[string]interface{}{
-			"Content": "patients.html",
+			"Content": templateName,
 			"Data":    data,
 		})
 		if err != nil {

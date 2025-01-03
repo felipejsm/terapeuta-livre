@@ -15,8 +15,9 @@ func NewLayoutHandler(template *template.Template) *LayoutHandler {
 
 func (h *LayoutHandler) HandleLayout(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
+		templateName := "layout.html"
 		err := h.Templates.ExecuteTemplate(w, "layout.html", map[string]interface{}{
-			"Content": "layout.html",
+			"Content": templateName,
 			"Data":    nil,
 		})
 		if err != nil {
