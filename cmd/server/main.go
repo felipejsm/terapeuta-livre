@@ -42,7 +42,7 @@ func main() {
 	// Roteamento
 	http.HandleFunc("/", layoutHandler.HandleLayout)
 
-	http.HandleFunc("/patients", patientHandler.HandleGetPatient)
+	http.HandleFunc("/patient", patientHandler.HandleGetPatient)
 
 	http.HandleFunc("/therapist", therapistHandler.HandleGetTherapist)
 	// Inicia o servidor

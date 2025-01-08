@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"felipejsm/tp-admin/internal/models"
+	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -35,12 +36,15 @@ func (r *PatientRepository) FindFileByMetadataId(metadataId int) (models.File, e
 
 func (r *PatientRepository) FindByIdAndTherapistId(id int, therapistId int) (models.Patient, error) {
 	var patient models.Patient
-	result := r.DB.Raw("SELECT * FROM tb_patient WHERE id = ? AND therapist_id = ?", id, therapistId)
+	fmt.Printf("Before RAW")
+	result := r.DB.Raw("SELECT * FROM tb_patient WHERE id = ? AND therapist_id = ?", id, therapistId).Scan(&patient)
+	fmt.Printf("Patient %v", patient.Name)
 	return patient, result.Error
 }
 
 func (r *PatientRepository) FindAllFilesByPatientId(id uint) ([]models.FileMetadata, error) {
 	var files []models.FileMetadata
 	result := r.DB.Raw("SELECT * FROM tb_file_metadata WHERE owner_id = ?", id).Scan(&files)
+	fmt.Printf("Files FULL: %v", files)
 	return files, result.Error
 }

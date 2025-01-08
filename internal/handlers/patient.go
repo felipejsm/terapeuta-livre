@@ -29,7 +29,8 @@ func (h *PatientHandler) HandleGetPatient(w http.ResponseWriter, r *http.Request
 			http.Error(w, "Paciente não encontrado", http.StatusNotFound)
 			return
 		}
-		templateName := "patients.html"
+		templateName := "patient.html"
+		fmt.Printf("Data full: %v", data)
 		err = h.Templates.ExecuteTemplate(w, "layout.html", map[string]interface{}{
 			"Content": templateName,
 			"Data":    data,

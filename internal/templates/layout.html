@@ -831,7 +831,9 @@
           </div>
         </header>
         <main id="content" class="h-full overflow-y-auto">
-          {{ block "content" . }}{{ end }}
+          {{ block "content" . }}
+            {{ template .Content .Data }}
+          {{ end }}
         </main>
        </div>
     </div>
