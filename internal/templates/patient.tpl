@@ -1,4 +1,4 @@
-{{ define "content" }}
+{{define "content"}}
 <nav class="flex px-6 py-3" aria-label="Breadcrumb">
     <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
       <li class="inline-flex items-center">

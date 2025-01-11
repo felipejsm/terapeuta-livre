@@ -1,4 +1,3 @@
-{{ define "layout.html" }}
 <!DOCTYPE html>
 <html :class="{ 'theme-dark': dark }" x-data="data()" lang="en">
   <head>
@@ -831,12 +830,9 @@
           </div>
         </header>
         <main id="content" class="h-full overflow-y-auto">
-          {{ block "content" . }}
-            {{ template .Content .Data }}
-          {{ end }}
+          {{ template "content" . }}
         </main>
        </div>
     </div>
   </body>
 </html>
-{{ end }}
