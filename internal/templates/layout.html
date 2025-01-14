@@ -830,7 +830,13 @@
           </div>
         </header>
         <main id="content" class="h-full overflow-y-auto">
-          {{ template "content" . }}
+          {{ if eq .TemplateName "therapist" }}
+              {{ template "therapist" . }}
+          {{ else if eq .TemplateName "patient" }}
+              {{ template "patient" . }}
+          {{ else if eq .TemplateName "patient_detail"}}
+              {{ template "patient_detail" .}}
+          {{ end }}
         </main>
        </div>
     </div>
