@@ -836,6 +836,8 @@
               {{ template "patient" . }}
           {{ else if eq .TemplateName "patient_detail"}}
               {{ template "patient_detail" .}}
+          {{ else if eq .TemplateName "file_metadata"}}
+              {{ template "file_metadata" .}}
           {{ end }}
         </main>
        </div>

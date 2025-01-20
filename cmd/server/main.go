@@ -20,8 +20,10 @@ func main() {
 	// Repositórios
 	repo := repository.NewPatientRepository(sqlDB)
 	therapistRepo := repository.NewTherapistRepository(sqlDB)
+	fileMetadataRepo := repository.NewFileMetadataRepository(sqlDB)
 
 	// Serviços
+	fileMetadataService := services.NewFileMetadataService(fileMetadataRepo)
 	patientService := services.NewPatientService(repo)
 	therapistService := services.NewTherapistService(therapistRepo)
 
@@ -35,6 +37,7 @@ func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	// Handlers
+	fileMetadataHandler := handlers.NewFileMetadataHandler(fileMetadataService, templates)
 	patientHandler := handlers.NewPatientHandler(patientService, templates)
 	therapistHandler := handlers.NewTherapistHandler(therapistService, templates)
 	layoutHandler := handlers.NewLayoutHandler(templates)
@@ -45,6 +48,8 @@ func main() {
 	http.HandleFunc("/patient", patientHandler.HandleGetPatient)
 
 	http.HandleFunc("/therapist", therapistHandler.HandleGetTherapist)
+
+	http.HandleFunc("/file_metadata", fileMetadataHandler.HandleGetFileMetadata)
 	// Inicia o servidor
 	fmt.Println("Server start listening @ port 8081")
 	err := http.ListenAndServe(":8081", nil)
