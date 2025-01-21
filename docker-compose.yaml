@@ -19,7 +19,7 @@ services:
     # but take into consideration that it will change the way
     # you are connecting to your database.
     ports:
-      - 5439:5432
+      - 5438:5432
 
     environment:
       POSTGRES_USER: fmoyses # The PostgreSQL user (useful to connect to the database)
