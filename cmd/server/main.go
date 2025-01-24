@@ -21,11 +21,13 @@ func main() {
 	repo := repository.NewPatientRepository(sqlDB)
 	therapistRepo := repository.NewTherapistRepository(sqlDB)
 	fileMetadataRepo := repository.NewFileMetadataRepository(sqlDB)
+    fileRepo := repository.FileRepository(sqlDB)
 
 	// Serviços
 	fileMetadataService := services.NewFileMetadataService(fileMetadataRepo)
 	patientService := services.NewPatientService(repo)
 	therapistService := services.NewTherapistService(therapistRepo)
+    fileService := services.FileService(fileRepo)
 
 	// Carrega os templates
 	templates := template.Must(template.ParseGlob("internal/templates/*.html"))
@@ -37,7 +39,7 @@ func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	// Handlers
-	fileMetadataHandler := handlers.NewFileMetadataHandler(fileMetadataService, templates)
+	fileMetadataHandler := handlers.NewFileMetadataHandler(fileMetadataService, templates, fileService)
 	patientHandler := handlers.NewPatientHandler(patientService, templates)
 	therapistHandler := handlers.NewTherapistHandler(therapistService, templates)
 	layoutHandler := handlers.NewLayoutHandler(templates)
