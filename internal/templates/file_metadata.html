@@ -59,16 +59,66 @@
       </div>
 
       <!-- Área de Upload de Arquivos -->
-      <div class="mb-6">
-        <div hx-post="/upload" hx-target="#fileTable" hx-swap="outerHTML"
-          class="block p-6 border-2 border-dashed border-gray-300 rounded-md text-center cursor-pointer">
-          <input type="file" id="file-upload" class="sr-only" multiple name="files"
-            hx-trigger="change from:#file-upload" hx-post="/upload" hx-target="#fileTable" hx-swap="outerHTML">
-          <label for="file-upload" class="cursor-pointer">
-            <p class="text-gray-600">Arraste seus arquivos ou clique para fazer upload</p>
-          </label>
-        </div>
-      </div>
+      <div 
+  x-data="{ files: [], uploading: false }" 
+  class="mb-6"
+>
+  <!-- Feedback visual para arquivos selecionados -->
+  <div class="mb-4">
+    <template x-if="files.length > 0">
+      <ul class="list-disc pl-5">
+        <template x-for="file in files" :key="file.name">
+          <li class="text-gray-700">
+            <span x-text="file.name"></span> 
+            (<span x-text="(file.size / 1024).toFixed(2)"></span> KB)
+          </li>
+        </template>
+      </ul>
+    </template>
+  </div>
+
+  <!-- Formulário de upload -->
+    <form 
+      hx-post="/file_metadata" 
+      hx-target="#fileTable" 
+      hx-swap="outerHTML" 
+      enctype="multipart/form-data" 
+      method="post"
+      x-on:submit.prevent="uploading = true"
+      class="block p-6 border-2 border-dashed border-gray-300 rounded-md text-center cursor-pointer"
+    >
+      <!-- Input de arquivo -->
+      <input 
+        type="file" 
+        id="file-upload" 
+        class="sr-only" 
+        multiple 
+        name="files" 
+        x-on:change="files = [...$event.target.files]"
+      >
+      <label for="file-upload" class="cursor-pointer">
+        <p class="text-gray-600">
+          Arraste seus arquivos ou clique para fazer upload
+        </p>
+      </label>
+
+      <!-- Botão de envio -->
+      <button 
+        type="submit" 
+        class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+        x-bind:disabled="files.length === 0 || uploading"
+      >
+        <span x-show="!uploading">Enviar</span>
+        <span x-show="uploading">Enviando...</span>
+      </button>
+    </form>
+
+    <!-- Div de destino para atualização do HTMX -->
+    <div id="fileTable" class="mt-6">
+      <!-- O conteúdo será substituído pelo HTMX após o envio -->
+    </div>
+  </div>
+
 
       <!-- Tabela de Arquivos -->
       <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs" id="fileTable" x-show="files.length > 0">
