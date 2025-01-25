@@ -21,13 +21,13 @@ func main() {
 	repo := repository.NewPatientRepository(sqlDB)
 	therapistRepo := repository.NewTherapistRepository(sqlDB)
 	fileMetadataRepo := repository.NewFileMetadataRepository(sqlDB)
-    fileRepo := repository.FileRepository(sqlDB)
+    fileRepo := repository.NewFileRepository(sqlDB)
 
 	// Serviços
 	fileMetadataService := services.NewFileMetadataService(fileMetadataRepo)
 	patientService := services.NewPatientService(repo)
 	therapistService := services.NewTherapistService(therapistRepo)
-    fileService := services.FileService(fileRepo)
+    fileService := services.NewFileService(fileRepo)
 
 	// Carrega os templates
 	templates := template.Must(template.ParseGlob("internal/templates/*.html"))
