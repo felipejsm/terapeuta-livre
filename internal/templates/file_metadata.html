@@ -1,219 +1,155 @@
 {{ define "file_metadata"}}
 
 <nav class="flex px-6 py-3" aria-label="Breadcrumb">
-    <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
-      <li class="inline-flex items-center">
+  <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+    <li class="inline-flex items-center">
+      <a href="#"
+        class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+        <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+          viewBox="0 0 20 20">
+          <path
+            d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
+        </svg>
+        Home
+      </a>
+    </li>
+    <li>
+      <div class="flex items-center">
+        <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+          fill="none" viewBox="0 0 6 10">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="m1 9 4-4-4-4" />
+        </svg>
         <a href="#"
-          class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
-          <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-            viewBox="0 0 20 20">
-            <path
-              d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
-          </svg>
-          Home
-        </a>
-      </li>
-      <li>
-        <div class="flex items-center">
-          <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="m1 9 4-4-4-4" />
-          </svg>
-          <a href="#"
-            class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">Paciente</a>
-        </div>
-      </li>
-      <li aria-current="page">
-        <div class="flex items-center">
-          <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="m1 9 4-4-4-4" />
-          </svg>
-          <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">Arquivo</span>
-        </div>
-      </li>
-    </ol>
-  </nav>
-  
-  <div class="container px-6 mx-auto grid" x-data="{ 
+          class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">Paciente</a>
+      </div>
+    </li>
+    <li aria-current="page">
+      <div class="flex items-center">
+        <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+          fill="none" viewBox="0 0 6 10">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="m1 9 4-4-4-4" />
+        </svg>
+        <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">Arquivo</span>
+      </div>
+    </li>
+  </ol>
+</nav>
+
+<div class="container px-6 mx-auto grid" x-data="{ 
       files: [ {{ range .Data }}
           { id: 1, name: '{{.FileName}}', lastUpdated: '{{.CreatedAt}}' }
             {{ if ne .ID (index $.Data 0).ID }},{{ end }}
           {{ end }}
       ]
   }">
-    <div class="my-4 px-4 py-2 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+  <div class="my-4 px-4 py-2 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
 
-    
-      <div class="flex items-center text-sm mb-6">
-        <img src="https://via.placeholder.com/100" alt="Foto do Paciente"
-          class="w-24 h-24 rounded-full border-2 border-blue-400">
-        <div class="ml-4">
-          <h2 class="text-2xl font-semibold text-gray-800">Nome do Paciente</h2>
-          <p class="text-sm text-gray-600">Paciente desde 2021</p>
-          <p class="text-sm text-gray-600">ID: 123456</p>
-        </div>
+
+    <div class="flex items-center text-sm mb-6">
+      <img src="https://via.placeholder.com/100" alt="Foto do Paciente"
+        class="w-24 h-24 rounded-full border-2 border-blue-400">
+      <div class="ml-4">
+        <h2 class="text-2xl font-semibold text-gray-800">Nome do Paciente</h2>
+        <p class="text-sm text-gray-600">Paciente desde 2021</p>
+        <p class="text-sm text-gray-600">ID: 123456</p>
       </div>
+    </div>
 
-      
-      <div 
-  x-data="{ files: [], uploading: false }" 
-  class="mb-6"
->
-  
-  <div class="mb-4">
-    <template x-if="files.length > 0">
-      <ul class="list-disc pl-5">
-        <template x-for="file in files" :key="file.name">
-          <li class="text-gray-700">
-            <span x-text="file.name"></span> 
-            (<span x-text="(file.size / 1024).toFixed(2)"></span> KB)
-          </li>
+    <div x-data="{ files: [], uploading: false }" class="mb-6">
+      <!-- Dropzone personalizado -->
+      <form hx-post="/file_metadata" hx-target="#fileTable" hx-swap="outerHTML" enctype="multipart/form-data"
+        method="post" x-on:submit.prevent="uploading = true"
+        class="block p-4 border border-gray-300 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 text-center cursor-pointer relative">
+        <!-- Input de arquivo oculto (restringido ao dropzone visual) -->
+        <input type="file" id="file-upload" class="opacity-0 absolute inset-0 w-full h-full cursor-pointer" name="files"
+          x-on:change="files = [...$event.target.files]">
+
+        <!-- Dropzone visual -->
+        <label for="file-upload" class="cursor-pointer flex flex-col items-center justify-center">
+          <div class="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full mb-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-400" viewBox="0 0 20 20"
+              fill="currentColor">
+              <path fill-rule="evenodd"
+                d="M3 10a7 7 0 1114 0A7 7 0 013 10zm7-4a.75.75 0 00-.75.75v3.5h-3.5a.75.75 0 000 1.5h3.5v3.5a.75.75 0 001.5 0v-3.5h3.5a.75.75 0 000-1.5h-3.5v-3.5A.75.75 0 0010 6z"
+                clip-rule="evenodd" />
+            </svg>
+          </div>
+          <p class="text-gray-600">
+            <span class="font-medium text-blue-600 hover:underline">Clique</span> ou arraste arquivos para enviar
+          </p>
+          <p class="text-xs text-gray-400 mt-1">Tamanho máximo: 10 MB por arquivo</p>
+        </label>
+
+        <!-- Exibir arquivos selecionados -->
+        <template x-if="files.length > 0">
+          <div class="mt-4 text-left w-full">
+            <p class="text-sm font-medium text-gray-700 mb-2">Arquivo selecionado:</p>
+            <ul class="list-disc list-inside text-sm text-gray-600">
+              <template x-for="file in files" :key="file.name">
+                <li class="truncate">
+                  <span x-text="file.name"></span>
+                  (<span x-text="(file.size / 1024).toFixed(2)"></span> KB)
+                </li>
+              </template>
+            </ul>
+          </div>
         </template>
-      </ul>
-    </template>
-  </div>
+      </form>
 
- 
-    <form 
-      hx-post="/file_metadata" 
-      hx-target="#fileTable" 
-      hx-swap="outerHTML" 
-      enctype="multipart/form-data" 
-      method="post"
-      x-on:submit.prevent="uploading = true"
-      class="block p-6 border-2 border-dashed border-gray-300 rounded-md text-center cursor-pointer"
-    >
-     
-      <input 
-        type="file" 
-        id="file-upload" 
-        class="sr-only" 
-        multiple 
-        name="files" 
-        x-on:change="files = [...$event.target.files]"
-      >
-      <label for="file-upload" class="cursor-pointer">
-        <p class="text-gray-600">
-          Arraste seus arquivos ou clique para fazer upload
-        </p>
-      </label>
-
-   
-      <button 
-        type="submit" 
-        class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-        x-bind:disabled="files.length === 0 || uploading"
-      >
-        <span x-show="!uploading">Enviar</span>
-        <span x-show="uploading">Enviando...</span>
-      </button>
-    </form>
-
-  
-    <div id="fileTable" class="mt-6">
-   
+      <!-- Botão de enviar (controlado por Alpine.js) -->
+      <div x-show="files.length > 0" class="mt-4">
+        <button type="submit"
+          class="w-full sm:w-auto px-5 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          x-bind:disabled="uploading"
+          x-on:click="$event.preventDefault(); uploading = true; $el.closest('form').requestSubmit();">
+          <span x-show="!uploading">Enviar arquivo</span>
+          <span x-show="uploading">Enviando...</span>
+        </button>
+      </div>
     </div>
-  </div>
 
 
-     
-      <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs" id="fileTable" x-show="files.length > 0">
-        <table class="w-full whitespace-no-wrap">
-          <thead>
-            <tr
-              class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-              <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Nome</th>
-              <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Data da Última Atualização</th>
-              <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Ações</th>
+
+    <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs" id="fileTable" x-show="files.length > 0">
+      <table class="w-full whitespace-no-wrap">
+        <thead>
+          <tr
+            class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Nome</th>
+            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Data da Última Atualização</th>
+            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Ações</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+          <template x-for="file in files" :key="file.id">
+            <tr>
+              <td class="px-4 py-2 text-gray-800" x-text="file.name"></td>
+              <td class="px-4 py-2 text-gray-800" x-text="file.lastUpdated"></td>
+              <td class="px-4 py-2 flex space-x-2">
+                <a :href="'/file/' + file.id" target="_self" class="text-blue-500 hover:text-blue-700">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                    class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M8 12l4 4m0 0l4-4m-4 4V4" />
+                  </svg>
+                </a>
+                <button @click="deleteFile(file.id)" class="text-red-500 hover:text-red-700">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                    class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </td>
             </tr>
-          </thead>
-          <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-            <template x-for="file in files" :key="file.id">
-              <tr>
-                <td class="px-4 py-2 text-gray-800" x-text="file.name"></td>
-                <td class="px-4 py-2 text-gray-800" x-text="file.lastUpdated"></td>
-                <td class="px-4 py-2 flex space-x-2">
-                  <a :href="'/file/' + file.id" target="_self" class="text-blue-500 hover:text-blue-700">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> 
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M8 12l4 4m0 0l4-4m-4 4V4" />
-                    </svg>
-                  </a>
-                  <button @click="deleteFile(file.id)" class="text-red-500 hover:text-red-700">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
-                </td>
-              </tr>
-            </template>
-          </tbody>
-        </table>
-      </div>
-
-      
-      <div x-show="files.length === 0" class="text-gray-500 text-center mt-4">
-        <p>Sem arquivos para esse paciente.</p>
-      </div>
+          </template>
+        </tbody>
+      </table>
+    </div>
+    <div x-show="files.length === 0" class="text-gray-500 text-center mt-4">
+      <p>Sem arquivos para esse paciente.</p>
     </div>
   </div>
-  {{end}}
-<!--
-
-<div class="container mx-auto mt-8">
-  <h1 class="text-2xl font-bold mb-4">Gerenciamento de Arquivos</h1>
-
-  <form 
-    hx-post="/file_metadata" 
-    hx-target="#file-list" 
-    hx-swap="outerHTML" 
-    encType="multipart/form-data" 
-    class="flex items-center space-x-4 mb-4"
-  >
-    <input 
-      type="file" 
-      name="file" 
-      required 
-      class="border p-2 rounded"
-    />
-    <button 
-      type="submit" 
-      class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded"
-    >
-      Upload
-    </button>
-  </form>
-
-  <table class="table-auto w-full border-collapse border border-gray-300" id="file-list">
-    <thead>
-      <tr class="bg-gray-100">
-        <th class="border px-4 py-2">Nome do Arquivo</th>
-        <th class="border px-4 py-2">Ações</th>
-      </tr>
-    </thead>
-    <tbody>
-
-      <template x-for="file in files" :key="file.id">
-        <tr>
-          <td class="border px-4 py-2" x-text="file.name"></td>
-          <td class="border px-4 py-2 flex space-x-2">
-
-            <a 
-              :href="'/file/' + file.id" 
-              hx-get="/file/{id}" 
-              hx-vals='{"id": file.id}' 
-              class="text-blue-500 hover:text-blue-700"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M8 12l4 4m0 0l4-4m-4 4V4" />
-              </svg>
-            </a>
-          </td>
-        </tr>
-      </template>
-    </tbody>
-  </table>
 </div>
--- >
+{{end}}
