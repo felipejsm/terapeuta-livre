@@ -1,6 +1,5 @@
 {{ define "file_metadata"}}
 
-
 <nav class="flex px-6 py-3" aria-label="Breadcrumb">
     <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
       <li class="inline-flex items-center">
@@ -47,7 +46,7 @@
   }">
     <div class="my-4 px-4 py-2 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
 
-      <!-- Cabeçalho do Perfil -->
+    
       <div class="flex items-center text-sm mb-6">
         <img src="https://via.placeholder.com/100" alt="Foto do Paciente"
           class="w-24 h-24 rounded-full border-2 border-blue-400">
@@ -58,12 +57,12 @@
         </div>
       </div>
 
-      <!-- Área de Upload de Arquivos -->
+      
       <div 
   x-data="{ files: [], uploading: false }" 
   class="mb-6"
 >
-  <!-- Feedback visual para arquivos selecionados -->
+  
   <div class="mb-4">
     <template x-if="files.length > 0">
       <ul class="list-disc pl-5">
@@ -77,7 +76,7 @@
     </template>
   </div>
 
-  <!-- Formulário de upload -->
+ 
     <form 
       hx-post="/file_metadata" 
       hx-target="#fileTable" 
@@ -87,7 +86,7 @@
       x-on:submit.prevent="uploading = true"
       class="block p-6 border-2 border-dashed border-gray-300 rounded-md text-center cursor-pointer"
     >
-      <!-- Input de arquivo -->
+     
       <input 
         type="file" 
         id="file-upload" 
@@ -102,7 +101,7 @@
         </p>
       </label>
 
-      <!-- Botão de envio -->
+   
       <button 
         type="submit" 
         class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
@@ -113,14 +112,14 @@
       </button>
     </form>
 
-    <!-- Div de destino para atualização do HTMX -->
+  
     <div id="fileTable" class="mt-6">
-      <!-- O conteúdo será substituído pelo HTMX após o envio -->
+   
     </div>
   </div>
 
 
-      <!-- Tabela de Arquivos -->
+     
       <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs" id="fileTable" x-show="files.length > 0">
         <table class="w-full whitespace-no-wrap">
           <thead>
@@ -137,20 +136,14 @@
                 <td class="px-4 py-2 text-gray-800" x-text="file.name"></td>
                 <td class="px-4 py-2 text-gray-800" x-text="file.lastUpdated"></td>
                 <td class="px-4 py-2 flex space-x-2">
-                  <!-- Botão de Download -->
-                  <button @click="downloadFile(file.id)" class="text-blue-500 hover:text-blue-700">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
-                      stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M8 12l4 4m0 0l4-4m-4 4V4" />
+                  <a :href="'/file/' + file.id" target="_self" class="text-blue-500 hover:text-blue-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> 
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M8 12l4 4m0 0l4-4m-4 4V4" />
                     </svg>
-                  </button>
-                  <!-- Botão de Delete -->
+                  </a>
                   <button @click="deleteFile(file.id)" class="text-red-500 hover:text-red-700">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
-                      stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M6 18L18 6M6 6l12 12" />
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>
                 </td>
@@ -160,10 +153,67 @@
         </table>
       </div>
 
-      <!-- Mensagem de Ausência de Arquivos -->
+      
       <div x-show="files.length === 0" class="text-gray-500 text-center mt-4">
         <p>Sem arquivos para esse paciente.</p>
       </div>
     </div>
   </div>
-{{end}}
+  {{end}}
+<!--
+
+<div class="container mx-auto mt-8">
+  <h1 class="text-2xl font-bold mb-4">Gerenciamento de Arquivos</h1>
+
+  <form 
+    hx-post="/file_metadata" 
+    hx-target="#file-list" 
+    hx-swap="outerHTML" 
+    encType="multipart/form-data" 
+    class="flex items-center space-x-4 mb-4"
+  >
+    <input 
+      type="file" 
+      name="file" 
+      required 
+      class="border p-2 rounded"
+    />
+    <button 
+      type="submit" 
+      class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded"
+    >
+      Upload
+    </button>
+  </form>
+
+  <table class="table-auto w-full border-collapse border border-gray-300" id="file-list">
+    <thead>
+      <tr class="bg-gray-100">
+        <th class="border px-4 py-2">Nome do Arquivo</th>
+        <th class="border px-4 py-2">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <template x-for="file in files" :key="file.id">
+        <tr>
+          <td class="border px-4 py-2" x-text="file.name"></td>
+          <td class="border px-4 py-2 flex space-x-2">
+
+            <a 
+              :href="'/file/' + file.id" 
+              hx-get="/file/{id}" 
+              hx-vals='{"id": file.id}' 
+              class="text-blue-500 hover:text-blue-700"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M8 12l4 4m0 0l4-4m-4 4V4" />
+              </svg>
+            </a>
+          </td>
+        </tr>
+      </template>
+    </tbody>
+  </table>
+</div>
+-- >

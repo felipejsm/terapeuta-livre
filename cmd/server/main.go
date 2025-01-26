@@ -11,6 +11,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+    "strings"
 )
 
 func main() {
@@ -52,6 +53,17 @@ func main() {
 	http.HandleFunc("/therapist", therapistHandler.HandleGetTherapist)
 
 	http.HandleFunc("/file_metadata", fileMetadataHandler.HandleGetFileMetadata)
+
+    http.HandleFunc("/file/", func(w http.ResponseWriter, r *http.Request) {
+    // Extrai o `id` da rota
+    id := strings.TrimPrefix(r.URL.Path, "/file/")
+    if id == "" {
+        http.Error(w, "ID not provided", http.StatusBadRequest)
+        return
+    }
+
+    fileMetadataHandler.HandleFileDownload(w, r, id)
+})
 	// Inicia o servidor
 	fmt.Println("Server start listening @ port 8081")
 	err := http.ListenAndServe(":8081", nil)

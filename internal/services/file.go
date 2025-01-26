@@ -16,6 +16,18 @@ func NewFileService(repo *repositories.FileRepository) *FileService {
 	}
 }
 
+func (s *FileService) DownloadFile(id int) (*models.File, error) {
+    var fileDownload models.File
+    fileDownload, err := s.Repo.DownloadFile(id)
+    if err != nil {
+        fmt.Printf("[Service] Erro @ DownloadFile %v", err)
+        return nil, err
+    }
+
+    return &fileDownload, nil 
+
+}
+
 func (s *FileService) UploadFile(metadataId int, file []byte) (*models.File, error) {
 	var fileUpload models.File
 	fileUpload, err := s.Repo.UploadFile(metadataId, file)
