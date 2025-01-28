@@ -12,7 +12,6 @@ type FileMetadataRepository struct {
 func NewFileMetadataRepository(db *gorm.DB) *FileMetadataRepository {
 	return &FileMetadataRepository{DB: db}
 }
-
 func (r *FileMetadataRepository) FindAllByOwnerId(ownerId int) ([]models.FileMetadata, error) {
 
 	var filesMetadata []models.FileMetadata

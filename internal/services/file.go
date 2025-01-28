@@ -16,6 +16,15 @@ func NewFileService(repo *repositories.FileRepository) *FileService {
 	}
 }
 
+func (s *FileService) DeleteFile(id int) (string, error) {
+    var result string
+    result, err := s.Repo.DeleteFile(id)
+    if err != nil {
+        return "nok", err
+    }
+    return result, nil
+}
+
 func (s *FileService) DownloadFile(id int) (*models.File, error) {
     var fileDownload models.File
     fileDownload, err := s.Repo.DownloadFile(id)

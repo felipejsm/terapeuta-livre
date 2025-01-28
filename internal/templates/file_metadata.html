@@ -135,12 +135,14 @@
                       d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M8 12l4 4m0 0l4-4m-4 4V4" />
                   </svg>
                 </a>
-                <button @click="deleteFile(file.id)" class="text-red-500 hover:text-red-700">
+                <button :hx-delete="'/file/' + file.id"
+                  class="text-red-500 hover:text-red-700">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                     class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
+
               </td>
             </tr>
           </template>

@@ -16,6 +16,12 @@ func NewFileRepository(db *gorm.DB) *FileRepository {
 	}
 }
 
+func (r *FileRepository) DeleteFile(id int) (string, error) {
+
+    result := r.DB.Raw("DELETE FROM tb_file WHERE id = ?", id)
+    return "Ok", result.Error
+}
+
 func (r *FileRepository) UploadFile(metadataId int, file []byte) (models.File, error) {
 	var fileUpload models.File
 
