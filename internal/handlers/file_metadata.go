@@ -23,34 +23,38 @@ func NewFileMetadataHandler(service *services.FileMetadataService, templates *te
         Template: templates,
 	}
 }
-
 func (h *FileMetadataHandler) HandleFileDownload(w http.ResponseWriter, r *http.Request, fileID string) {
     fmt.Printf("[HandleFileDownload] Func init with id %v and method %v", fileID, r.Method)
-     if r.Method != http.MethodGet {
-        http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
-        return
-    }
     id, err := strconv.Atoi(fileID)
-    if err != nil {
-        fmt.Printf("Error during id conversion")
-    }
-    file, err := h.FileService.DownloadFile(id) 
-     if err != nil {
-            http.Error(w, "Arquivo não encontrado", http.StatusNotFound)
+     if r.Method == http.MethodGet {
+        if err != nil {
+            fmt.Printf("Error during id conversion")
+        }
+        file, err := h.FileService.DownloadFile(id) 
+         if err != nil {
+                http.Error(w, "Arquivo não encontrado", http.StatusNotFound)
+                return
+            }
+            // Define cabeçalhos apropriados para o download
+            w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=%s", "file_name.pdf"))
+            mimeType := http.DetectContentType(file.FileData)
+            w.Header().Set("Content-Type", mimeType)
+            w.Header().Set("Content-Length",     fmt.Sprintf("%d", len(file.FileData)))
+
+            // Escreve os bytes do arquivo na resposta
+            _, err = w.Write(file.FileData)
+            if err != nil {
+                http.Error(w, "Erro ao enviar o arquivo", http.StatusInternalServerError)
+            }    
+            fmt.Printf("[DownloadFile] Func end")
+    } else if r.Method == http.MethodDelete {
+        _, err := h.FileService.DeleteFile(id)
+        if err != nil {
+            http.Error(w, "Erro ao deletar arquivo", http.StatusInternalServerError)
             return
         }
-        // Define cabeçalhos apropriados para o download
-        w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=%s", "file_name.pdf"))
-        mimeType := http.DetectContentType(file.FileData)
-        w.Header().Set("Content-Type", mimeType)
-        w.Header().Set("Content-Length",     fmt.Sprintf("%d", len(file.FileData)))
-
-        // Escreve os bytes do arquivo na resposta
-        _, err = w.Write(file.FileData)
-        if err != nil {
-            http.Error(w, "Erro ao enviar o arquivo", http.StatusInternalServerError)
-        }    
-        fmt.Printf("[DownloadFile] Func end")
+        w.WriteHeader(http.StatusOK)
+    }
 }
 
 func (h *FileMetadataHandler) HandleGetFileMetadata(w http.ResponseWriter, r *http.Request) {
