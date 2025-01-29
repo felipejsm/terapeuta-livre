@@ -48,6 +48,7 @@ func (h *FileMetadataHandler) HandleFileDownload(w http.ResponseWriter, r *http.
             }    
             fmt.Printf("[DownloadFile] Func end")
     } else if r.Method == http.MethodDelete {
+        fmt.Printf("File Delete begin")
         _, err := h.FileService.DeleteFile(id)
         if err != nil {
             http.Error(w, "Erro ao deletar arquivo", http.StatusInternalServerError)
