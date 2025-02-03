@@ -6,14 +6,14 @@ import (
 	"os"
 	"time"
 
-	"felipejsm/tp-admin/internal/config"
+//	"felipejsm/tp-admin/internal/config"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 func InitDB() *gorm.DB {
-	config.LoadEnv()
+//	config.LoadEnv()
     // Lendo as variáveis de ambiente
     dbHost := os.Getenv("DB_HOST")
     dbUser := os.Getenv("DB_USER")
