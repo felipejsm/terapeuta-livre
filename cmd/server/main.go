@@ -12,6 +12,7 @@ import (
 	"net/http"
 	"os"
     "strings"
+    "path/filepath"
 )
 
 func main() {
@@ -29,9 +30,13 @@ func main() {
 	patientService := services.NewPatientService(repo)
 	therapistService := services.NewTherapistService(therapistRepo)
     fileService := services.NewFileService(fileRepo)
-
+    dir, err := os.Getwd()
+    if err != nil {
+        log.Fatal("Erro ao obter o diretório de execução:", err)
+    }
+    templatePath := filepath.Join(dir, "internal", "templates", "*.html")
 	// Carrega os templates
-	templates := template.Must(template.ParseGlob("internal/templates/*.html"))
+	templates := template.Must(template.ParseGlob(templatePath))
 	for _, tmplName := range templates.Templates() {
 		fmt.Printf("Template carregado: %s\n", tmplName.Name())
 	}
@@ -66,7 +71,7 @@ func main() {
 })
 	// Inicia o servidor
 	fmt.Println("Server start listening @ port 8081")
-	err := http.ListenAndServe(":8081", nil)
+	err = http.ListenAndServe(":8081", nil)
 
 	// Tratamento de erros do servidor
 	if errors.Is(err, http.ErrServerClosed) {
