@@ -34,7 +34,7 @@ func main() {
     if err != nil {
         log.Fatal("Erro ao obter o diretório de execução:", err)
     }
-    templatePath := filepath.Join(dir, "..", "internal", "templates", "*.html")
+    templatePath := filepath.Join(dir, "..","..", "internal", "templates", "*.html")
     log.Println("Caminho dos templates:", templatePath)
 	// Carrega os templates
 	templates := template.Must(template.ParseGlob(templatePath))
