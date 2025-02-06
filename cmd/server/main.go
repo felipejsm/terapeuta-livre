@@ -41,8 +41,9 @@ func main() {
 	for _, tmplName := range templates.Templates() {
 		fmt.Printf("Template carregado: %s\n", tmplName.Name())
 	}
+    staticPath := filepath.Join(dir, "..","..", "web", "static")
 	// Configuração de arquivos estáticos
-	fs := http.FileServer(http.Dir("./web/static"))
+	fs := http.FileServer(http.Dir(staticPath))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	// Handlers
