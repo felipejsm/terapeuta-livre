@@ -34,15 +34,26 @@ func main() {
     if err != nil {
         log.Fatal("Erro ao obter o diretório de execução:", err)
     }
-    templatePath := filepath.Join(dir, "..","..", "internal", "templates", "*.html")
+    var templatePath string
+    isProd := os.Getenv("PROD")
+    if isProd != "" {
+        templatePath = filepath.Join(dir, "..","..", "internal", "templates", "*.html")
+    } else {
+        templatePath = filepath.Join(dir, "internal", "templates", "*.html")
+    }
     log.Println("Caminho dos templates:", templatePath)
 	// Carrega os templates
 	templates := template.Must(template.ParseGlob(templatePath))
 	for _, tmplName := range templates.Templates() {
 		fmt.Printf("Template carregado: %s\n", tmplName.Name())
 	}
-    staticPath := filepath.Join(dir, "..","..", "web", "static")
-	// Configuração de arquivos estáticos
+    var staticPath string
+    if isProd != "" {
+        staticPath = filepath.Join(dir, "..","..", "web", "static")
+    } else {
+        staticPath = filepath.Join(dir, "web", "static")
+    }
+    // Configuração de arquivos estáticos
 	fs := http.FileServer(http.Dir(staticPath))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
