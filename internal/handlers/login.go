@@ -1,9 +1,10 @@
 package handlers
 
 import (
-    "net/http"
-    "html/template"
-    "log"
+	"fmt"
+	"html/template"
+	"log"
+	"net/http"
 )
 
 type LoginHandler struct {
@@ -17,6 +18,7 @@ func NewLoginHandler(templates *template.Template) *LoginHandler {
 }
 
 func (h *LoginHandler) HandleLogin (w http.ResponseWriter, r *http.Request) {
+    fmt.Println("/login")
     if r.Method == http.MethodGet {
         templateName := "login"
         err := h.Templates.ExecuteTemplate(w, "login.html", map[string]interface{}{

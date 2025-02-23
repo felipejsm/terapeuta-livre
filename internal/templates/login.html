@@ -1,9 +1,9 @@
-<body>
-  <hanko-auth />
+{{ define "login"}}
+<hanko-auth />
 
   <script type="module">
     import { register } from "https://esm.run/@teamhanko/hanko-elements";
 
     await register("https://06c74591-1f06-4ddf-a9f4-06e5e87b00d3.hanko.io");
   </script>
-</body>
+{{end}}
