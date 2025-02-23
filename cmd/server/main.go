@@ -62,6 +62,7 @@ func main() {
 	patientHandler := handlers.NewPatientHandler(patientService, templates)
 	therapistHandler := handlers.NewTherapistHandler(therapistService, templates)
 	layoutHandler := handlers.NewLayoutHandler(templates)
+    loginHandler := handlers.NewLoginHandler(templates)
 
 	// Roteamento
 	http.HandleFunc("/", layoutHandler.HandleLayout)
@@ -79,6 +80,7 @@ func main() {
         http.Error(w, "ID not provided", http.StatusBadRequest)
         return
     }
+    http.HandleFunc("/login", loginHandler.HandleLogin)
 
     fileMetadataHandler.HandleFileDownload(w, r, id)
 })
