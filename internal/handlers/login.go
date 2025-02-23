@@ -24,7 +24,7 @@ func (h *LoginHandler) HandleLogin (w http.ResponseWriter, r *http.Request) {
             "Data": nil,
         })
         if err != nil {
-            http.Error(w, err , htth.StatusInternalServerError)
+            http.Error(w, err.Error() , htth.StatusInternalServerError)
             log.Println(err)
         } else {
             http.NotFound(w, r)
