@@ -73,6 +73,8 @@ func main() {
 
 	http.HandleFunc("/file_metadata", fileMetadataHandler.HandleGetFileMetadata)
 
+    http.HandleFunc("/login", loginHandler.HandleLogin)
+
     http.HandleFunc("/file/", func(w http.ResponseWriter, r *http.Request) {
     // Extrai o `id` da rota
     id := strings.TrimPrefix(r.URL.Path, "/file/")
@@ -80,8 +82,6 @@ func main() {
         http.Error(w, "ID not provided", http.StatusBadRequest)
         return
     }
-    http.HandleFunc("/login", loginHandler.HandleLogin)
-
     fileMetadataHandler.HandleFileDownload(w, r, id)
 })
 	// Inicia o servidor

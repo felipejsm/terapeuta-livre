@@ -21,15 +21,15 @@ func (h *LoginHandler) HandleLogin (w http.ResponseWriter, r *http.Request) {
     fmt.Println("/login")
     if r.Method == http.MethodGet {
         templateName := "login"
-        err := h.Templates.ExecuteTemplate(w, "login.html", map[string]interface{}{
+        err := h.Templates.ExecuteTemplate(w, "login", map[string]interface{}{
             "TemplateName": templateName,
             "Data": nil,
         })
         if err != nil {
             http.Error(w, err.Error() , http.StatusInternalServerError)
             log.Println(err)
-        } else {
-            http.NotFound(w, r)
-        }
+        } 
+    } else {
+        http.NotFound(w, r)
     }
 } 
