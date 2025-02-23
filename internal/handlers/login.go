@@ -3,6 +3,7 @@ package handlers
 import (
     "net/http"
     "html/template"
+    "log"
 )
 
 type LoginHandler struct {
@@ -24,6 +25,7 @@ func (h *LoginHandler) HandleLogin (w http.ResponseWriter, r *http.Request) {
         })
         if err != nil {
             http.Error(w, "Erro ao renderizar login", http.StatusInternalServerError)
+            log.Println(err)
         } else {
             http.NotFound(w, r)
         }
