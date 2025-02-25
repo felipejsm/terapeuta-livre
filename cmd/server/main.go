@@ -13,6 +13,11 @@ import (
 	"os"
     "strings"
     "path/filepath"
+    "github.com/labstack/echo/v4"
+	"github.com/lestrrat-go/jwx/v2/jwk"
+	"github.com/lestrrat-go/jwx/v2/jwt"
+    "context"
+    "time"
 )
 
 func main() {
@@ -65,17 +70,17 @@ func main() {
     loginHandler := handlers.NewLoginHandler(templates)
 
 	// Roteamento
-	http.HandleFunc("/", layoutHandler.HandleLayout)
+	http.HandleFunc("/", SessionMiddleware(layoutHandler.HandleLayout))
 
-	http.HandleFunc("/patient", patientHandler.HandleGetPatient)
+	http.HandleFunc("/patient", SessionMiddleware(patientHandler.HandleGetPatient))
 
-	http.HandleFunc("/therapist", therapistHandler.HandleGetTherapist)
+	http.HandleFunc("/therapist", SessionMiddleware(therapistHandler.HandleGetTherapist))
 
-	http.HandleFunc("/file_metadata", fileMetadataHandler.HandleGetFileMetadata)
+	http.HandleFunc("/file_metadata", SessionMiddleware(fileMetadataHandler.HandleGetFileMetadata))
 
     http.HandleFunc("/login", loginHandler.HandleLogin)
 
-    http.HandleFunc("/file/", func(w http.ResponseWriter, r *http.Request) {
+    http.HandleFunc("/file/", SessionMiddleware(func(w http.ResponseWriter, r *http.Request) {
     // Extrai o `id` da rota
     id := strings.TrimPrefix(r.URL.Path, "/file/")
     if id == "" {
@@ -83,7 +88,7 @@ func main() {
         return
     }
     fileMetadataHandler.HandleFileDownload(w, r, id)
-})
+}))
 	// Inicia o servidor
 	fmt.Println("Server start listening @ port 8081")
 	err = http.ListenAndServe(":8081", nil)
@@ -96,3 +101,54 @@ func main() {
 		os.Exit(1)
 	}
 }
+
+func SessionMiddleware(next http.HandlerFunc) http.HandlerFunc {
+    return func(w http.ResponseWriter, r *http.Request) {
+        // 1. Recuperar o cookie "hanko"
+        cookie, err := r.Cookie("hanko")
+        if err != nil {
+            if err == http.ErrNoCookie {
+                http.Redirect(w, r, "/login", http.StatusTemporaryRedirect)
+                return
+            }
+            http.Error(w, "Erro ao recuperar cookie", http.StatusInternalServerError)
+            return
+        }
+        hankoApiURL := os.Getenv("HANKO_URL")
+        // 2. Buscar as chaves públicas (JWKS)
+        set, err := jwk.Fetch(
+            context.Background(),
+            fmt.Sprintf("%v/.well-known/jwks.json", hankoApiURL),
+        )
+        if err != nil {
+            log.Println("Erro ao buscar JWKS:", err)
+            http.Redirect(w, r, "/login", http.StatusTemporaryRedirect)
+            return
+        }
+
+        // 3. Validar o token JWT
+        token, err := jwt.Parse([]byte(cookie.Value), jwt.WithKeySet(set))
+        if err != nil {
+            log.Println("Erro ao validar token:", err)
+            http.Redirect(w, r, "/login", http.StatusTemporaryRedirect)
+            return
+        }
+
+        // 4. Verificar expiração do token
+        if token.Expiration().Before(time.Now()) {
+            log.Println("Token expirado para usuário:", token.Subject())
+            http.Redirect(w, r, "/login", http.StatusTemporaryRedirect)
+            return
+        }
+
+        // 5. Adicionar informações no contexto e continuar requisição
+        log.Printf("Sessão válida para usuário: %s", token.Subject())
+
+        // Define o usuário no contexto
+        ctx := context.WithValue(r.Context(), "user", token.Subject())
+
+        // Chama o handler original
+        next(w, r.WithContext(ctx))
+    }
+}
+
