@@ -13,7 +13,6 @@ import (
 	"os"
     "strings"
     "path/filepath"
-    "github.com/labstack/echo/v4"
 	"github.com/lestrrat-go/jwx/v2/jwk"
 	"github.com/lestrrat-go/jwx/v2/jwt"
     "context"
