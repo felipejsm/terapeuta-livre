@@ -38,7 +38,7 @@
           </div>
           <div class="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
             <div class="w-full">
-              <hanko-auth />
+              <hanko-auth lang="ptBR"/>
             </div>
           </div>
         </div>
@@ -48,7 +48,7 @@
 </html>
 <script type="module">
   import { register } from "https://esm.run/@teamhanko/hanko-elements";
-  import { ptBR } from "@teamhanko/hanko-elements/i18n/ptBR";
+  import { ptBR } from "https://cdn.jsdelivr.net/npm/@teamhanko/hanko-elements/dist/i18n/ptBR.js";
 
   const { hanko } = await register(process.env.HANKO_API_URL,{ translations: ptBR});
   hanko.onSessionCreated(() => {
