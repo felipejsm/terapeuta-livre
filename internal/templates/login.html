@@ -57,10 +57,10 @@
       "forgotPassword": "Esqueceu sua senha?",
       "or": "Ou",
       "signInWith": "Entrar com {provider}",
-      // Adicione mais traduções conforme necessário...
   };
 
-  const { hanko } = await register(process.env.HANKO_API_URL,{ translations: ptBR});
+  const { hanko } = await register("https://06c74591-1f06-4ddf-a9f4-06e5e87b00d3.hanko.io",
+  { translations: ptBR});
   hanko.onSessionCreated(() => {
       document.location.href = "https://terapeuta-livre.onrender.com/";
     });
