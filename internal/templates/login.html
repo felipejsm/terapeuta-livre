@@ -48,7 +48,17 @@
 </html>
 <script type="module">
   import { register } from "https://esm.run/@teamhanko/hanko-elements";
-  import { ptBR } from "https://cdn.jsdelivr.net/npm/@teamhanko/hanko-elements/dist/i18n/ptBR.js";
+  const ptBR = {
+      "signIn": "Entrar",
+      "signUp": "Cadastrar",
+      "email": "E-mail",
+      "password": "Senha",
+      "continue": "Continuar",
+      "forgotPassword": "Esqueceu sua senha?",
+      "or": "Ou",
+      "signInWith": "Entrar com {provider}",
+      // Adicione mais traduções conforme necessário...
+  };
 
   const { hanko } = await register(process.env.HANKO_API_URL,{ translations: ptBR});
   hanko.onSessionCreated(() => {
