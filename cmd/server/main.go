@@ -150,7 +150,7 @@ func SessionMiddleware(next http.HandlerFunc, therapistService *services.Therapi
 		}
 		// 5. Verificar se o usuário existe no banco de dados
 		therapist, err := therapistService.FindByEmail(email)
-		if err != nil {
+		if err != nil || therapist.Email == "" {
 			// Se o usuário não existe, criar um novo terapeuta
 			newTherapist := models.Therapist{ // Usando o email como nome inicial
 				Email:    email,
