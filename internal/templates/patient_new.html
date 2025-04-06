@@ -1,0 +1,107 @@
+{{ define "patient_new" }}
+<nav class="flex px-6 py-3" aria-label="Breadcrumb">
+  <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+    <li class="inline-flex items-center">
+      <a href="/patients"
+        class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+        <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+          viewBox="0 0 20 20">
+          <path
+            d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
+        </svg>
+        Pacientes
+      </a>
+    </li>
+    <li>
+      <div class="flex items-center">
+        <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="m1 9 4-4-4-4" />
+        </svg>
+        <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">Novo Paciente</span>
+      </div>
+    </li>
+  </ol>
+</nav>
+
+<div class="container px-6 mx-auto grid">
+  <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
+    Cadastro de Novo Paciente
+  </h2>
+  <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+    <form action="/patients" method="POST" class="space-y-4">
+      <!-- Informações Básicas -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm">
+            <span class="text-gray-700 dark:text-gray-400">Nome</span>
+            <input type="text" name="name" required
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              placeholder="Nome completo" />
+          </label>
+        </div>
+        <div>
+          <label class="block text-sm">
+            <span class="text-gray-700 dark:text-gray-400">Email</span>
+            <input type="email" name="email" required
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              placeholder="email@exemplo.com" />
+          </label>
+        </div>
+        <div>
+          <label class="block text-sm">
+            <span class="text-gray-700 dark:text-gray-400">CPF</span>
+            <input type="text" name="cpf" required
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              placeholder="000.000.000-00" />
+          </label>
+        </div>
+        <div>
+          <label class="block text-sm">
+            <span class="text-gray-700 dark:text-gray-400">Telefone</span>
+            <input type="tel" name="phone" required
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              placeholder="(00) 00000-0000" />
+          </label>
+        </div>
+      </div>
+
+      <!-- Informações Adicionais -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm">
+            <span class="text-gray-700 dark:text-gray-400">Data de Nascimento</span>
+            <input type="date" name="birth_date" required
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" />
+          </label>
+        </div>
+        <div>
+          <label class="block text-sm">
+            <span class="text-gray-700 dark:text-gray-400">Gênero</span>
+            <select name="gender" required
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-select">
+              <option value="">Selecione</option>
+              <option value="M">Masculino</option>
+              <option value="F">Feminino</option>
+              <option value="O">Outro</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <!-- Botões de Ação -->
+      <div class="flex justify-end space-x-4">
+        <a href="/patients"
+          class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-gray-600 border border-transparent rounded-lg active:bg-gray-600 hover:bg-gray-700 focus:outline-none focus:shadow-outline-gray">
+          Cancelar
+        </a>
+        <button type="submit"
+          class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+          Salvar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{{ end }} 

@@ -75,6 +75,9 @@ func main() {
 
 	http.HandleFunc("/patient", SessionMiddleware(patientHandler.HandleGetPatient, therapistService))
 
+	http.HandleFunc("/patients/new", SessionMiddleware(patientHandler.HandleNewPatient, therapistService))
+	http.HandleFunc("/patients", SessionMiddleware(patientHandler.HandleCreatePatient, therapistService))
+
 	http.HandleFunc("/therapist", SessionMiddleware(therapistHandler.HandleGetTherapist, therapistService))
 
 	http.HandleFunc("/file_metadata", SessionMiddleware(fileMetadataHandler.HandleGetFileMetadata, therapistService))

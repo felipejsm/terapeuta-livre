@@ -32,27 +32,23 @@
               </div>
             </div>
             <!-- Card -->
-            <div
-              class="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800"
-            >
-              <div
-                class="p-3 mr-4 text-green-500 bg-green-100 rounded-full dark:text-green-100 dark:bg-green-500"
-              >
-              <svg class="w-6 h-6" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
-              </svg>
-              </div>
-              <div>
-                <p
-                  class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400"
-                >
-                  Pacientes
-                </p>
-                <p
-                  class="text-lg font-semibold text-gray-700 dark:text-gray-200"
-                >
-                  Prontuários
-                </p>
+            <!-- Card de Pacientes (Estado Zero) -->
+            <div class="relative p-6 bg-white rounded-lg shadow-xs dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-solid hover:border-teal-400 transition-all duration-200">
+              <div class="text-center">
+                  <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4"/>
+                  </svg>
+                  <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">Nenhum paciente cadastrado</h3>
+                  <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Comece adicionando seu primeiro paciente</p>
+                  <div class="mt-6">
+                      <button hx-get="/patients/new" hx-target="#content" hx-swap="outerHTML"
+                          class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
+                          <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                          </svg>
+                          Adicionar Paciente
+                      </button>
+                  </div>
               </div>
             </div>
             <!-- Card -->

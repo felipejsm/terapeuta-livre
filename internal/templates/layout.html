@@ -281,12 +281,13 @@
             </li>
           </ul>
           <div class="px-6 my-6">
-            <button
+            <a
+              href="/patients/new"
               class="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
             >
-              Create account
+              Novo Paciente
               <span class="ml-2" aria-hidden="true">+</span>
-            </button>
+            </a>
           </div>
         </div>
       </aside>
@@ -565,12 +566,13 @@
             </li>
           </ul>
           <div class="px-6 my-6">
-            <button
-              class="flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+            <a
+              href="/patients/new"
+              class="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
             >
-              Create account
+              Novo Paciente
               <span class="ml-2" aria-hidden="true">+</span>
-            </button>
+            </a>
           </div>
         </div>
       </aside>
@@ -840,6 +842,8 @@
               {{ template "patient_detail" .}}
           {{ else if eq .TemplateName "file_metadata"}}
               {{ template "file_metadata" .}}
+          {{ else if eq .TemplateName "patient_new"}}
+              {{ template "patient_new" .}}
           {{ end }}
         </main>
        </div>
