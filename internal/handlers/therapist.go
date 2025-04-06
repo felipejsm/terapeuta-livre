@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"context"
 )
 
 type TherapistHandler struct {
@@ -22,8 +23,10 @@ func NewTherapistHandler(service *services.TherapistService, templates *template
 func (h *TherapistHandler) HandleGetTherapist(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("Template @ Therapist -> %s", h.Templates.Name())
 	if r.Method == http.MethodGet && r.URL.Path == "/therapist" {
-
-		data, err := h.Service.GetTherapistDetail(1)
+		// Recuperar o ID do terapeuta do contexto
+		therapistID := r.Context().Value("therapist_id").(uint)
+		
+		data, err := h.Service.GetTherapistDetail(int(therapistID))
 		if err != nil {
 			http.Error(w, "Terapeuta não encontrado", http.StatusNotFound)
 			return
@@ -37,7 +40,6 @@ func (h *TherapistHandler) HandleGetTherapist(w http.ResponseWriter, r *http.Req
 		})
 		if err != nil {
 			http.Error(w, "Erro ao renderizar o template. Err: "+err.Error(), http.StatusInternalServerError)
-
 		}
 	} else {
 		http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)

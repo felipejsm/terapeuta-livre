@@ -6,6 +6,7 @@ import (
 	"felipejsm/tp-admin/internal/handlers"
 	repository "felipejsm/tp-admin/internal/repositories"
 	"felipejsm/tp-admin/internal/services"
+	"felipejsm/tp-admin/internal/models"
 	"fmt"
 	"html/template"
 	"log"
@@ -140,11 +141,31 @@ func SessionMiddleware(next http.HandlerFunc) http.HandlerFunc {
             return
         }
 
-        // 5. Adicionar informações no contexto e continuar requisição
+        // 5. Verificar se o usuário existe no banco de dados
+        therapist, err := therapistService.FindByEmail(token.Subject())
+        if err != nil {
+            // Se o usuário não existe, criar um novo terapeuta
+            newTherapist := models.Therapist{
+                Name:  token.Subject(), // Usando o email como nome inicial
+                Email: token.Subject(),
+                Login: token.Subject(), // Usando o email como login
+                Password: "", // Não precisamos de senha pois usamos Hanko
+            }
+            therapist, err = therapistService.CreateTherapist(newTherapist)
+            if err != nil {
+                log.Printf("Erro ao criar novo terapeuta: %v", err)
+                http.Error(w, "Erro ao criar novo terapeuta", http.StatusInternalServerError)
+                return
+            }
+            log.Printf("Novo terapeuta criado: %s", therapist.Email)
+        }
+
+        // 6. Adicionar informações no contexto e continuar requisição
         log.Printf("Sessão válida para usuário: %s", token.Subject())
 
-        // Define o usuário no contexto
+        // Define o usuário e o ID do terapeuta no contexto
         ctx := context.WithValue(r.Context(), "user", token.Subject())
+        ctx = context.WithValue(ctx, "therapist_id", therapist.ID)
 
         // Chama o handler original
         next(w, r.WithContext(ctx))

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"context"
 )
 
 type PatientHandler struct {
@@ -22,8 +23,10 @@ func NewPatientHandler(service *services.PatientService, templates *template.Tem
 func (h *PatientHandler) HandleGetPatient(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("Template @ Patient -> %s", h.Templates.Name())
 	if r.Method == http.MethodGet && r.URL.Path == "/patient" {
-		//pegar ids da sessão ou req
-		data, err := h.Service.GetPatientDetail(1, 1)
+		// Recuperar o ID do terapeuta do contexto
+		therapistID := r.Context().Value("therapist_id").(uint)
+		
+		data, err := h.Service.GetPatientDetail(1, int(therapistID))
 		fmt.Println("Dados patients: Name ->  " + data.Name)
 		if err != nil {
 			http.Error(w, "Paciente não encontrado", http.StatusNotFound)

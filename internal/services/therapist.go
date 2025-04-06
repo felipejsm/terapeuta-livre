@@ -27,3 +27,11 @@ func (s *TherapistService) GetTherapistDetail(id int) (*dtos.TherapistDto, error
 	response := dtos.TherapistToDto(therapist, patientsDto, files)
 	return response, err
 }
+
+func (s *TherapistService) FindByEmail(email string) (models.Therapist, error) {
+	return s.Repo.FindByEmail(email)
+}
+
+func (s *TherapistService) CreateTherapist(therapist models.Therapist) (models.Therapist, error) {
+	return s.Repo.CreateTherapist(therapist)
+}

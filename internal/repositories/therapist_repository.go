@@ -13,6 +13,18 @@ type TherapistRepository struct {
 func NewTherapistRepository(db *gorm.DB) *TherapistRepository {
 	return &TherapistRepository{DB: db}
 }
+
+func (r *TherapistRepository) FindByEmail(email string) (models.Therapist, error) {
+	var therapist models.Therapist
+	result := r.DB.Raw("SELECT * FROM tb_therapist WHERE email = ?", email).Scan(&therapist)
+	return therapist, result.Error
+}
+
+func (r *TherapistRepository) CreateTherapist(therapist models.Therapist) (models.Therapist, error) {
+	result := r.DB.Create(&therapist)
+	return therapist, result.Error
+}
+
 func (r *TherapistRepository) FindAllFilesByTherapistId(id int) ([]models.FileMetadata, error) {
 	var files []models.FileMetadata
 	result := r.DB.Raw("SELECT * FROM tb_file_metadata WHERE owner_id = ?", id).Scan(&files)
@@ -23,7 +35,6 @@ func (r *TherapistRepository) FindAllPatientsById(id int) ([]models.Patient, err
 	var patients []models.Patient
 	result := r.DB.Raw("SELECT * FROM tb_patient WHERE therapist_id = ?", id).Scan(&patients)
 	return patients, result.Error
-
 }
 
 func (r *TherapistRepository) FindById(id int) (models.Therapist, error) {
