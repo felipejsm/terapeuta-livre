@@ -10,7 +10,18 @@ CREATE TABLE tb_therapist (
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     login VARCHAR(50) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL
+    password VARCHAR(255) NOT NULL,
+    cpf VARCHAR(14) UNIQUE,
+    phone VARCHAR(20),     
+    crp VARCHAR(20),       
+    specialization VARCHAR(100),
+    active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_login TIMESTAMP,
+    profile_picture_key VARCHAR(255),
+    timezone VARCHAR(50) DEFAULT 'America/Sao_Paulo',
+    receive_notifications BOOLEAN DEFAULT 
 );
 
 -- Criação da tabela de pacientes
@@ -19,6 +30,23 @@ CREATE TABLE tb_patient (
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     therapist_id INT NOT NULL,
+    birth_date DATE,
+    gender VARCHAR(20),       -- Pode ser enum('Masculino','Feminino','Outro','Prefiro não informar')
+    phone VARCHAR(20),
+    cpf VARCHAR(14) UNIQUE,
+    rg VARCHAR(20),
+    address TEXT,
+    emergency_contact_name VARCHAR(100),
+    emergency_contact_phone VARCHAR(20),
+    health_insurance VARCHAR(100),
+    health_insurance_number VARCHAR(50),
+    active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    notes TEXT,              -- Observações gerais
+    profile_picture_key VARCHAR(255),
+    marital_status VARCHAR(30),
+    profession VARCHAR(100),
     CONSTRAINT fk_therapist_patient FOREIGN KEY (therapist_id) REFERENCES tb_therapist(id) ON DELETE CASCADE
 );
 

@@ -1,128 +1,77 @@
 {{ define "patient_detail" }}
 <div class="container px-6 mx-auto grid">
-          <div class="my-6 px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
-            <div class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+  <div class="my-6 px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+    <div class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+      <!-- Seção do Cabeçalho do Perfil -->
+      <div class="relative flex items-center text-sm mb-6">
+        <img src="https://via.placeholder.com/100" alt="Foto do Paciente"
+          class="w-24 h-24 rounded-full border-2 border-blue-400">
+        <div class="ml-4">
+          <h2 class="text-2xl font-semibold text-gray-800">{{.Data.Name}}</h2>
+          <p class="text-sm text-gray-600">Paciente desde {{.Data.CreatedAt.Format "01/2006"}}</p>
+          <p class="text-sm text-gray-600">ID: {{.Data.ID}}</p>
+        </div>
+      </div>
 
-              <!-- Seção do Cabeçalho do Perfil -->
-              <div class="relative flex items-center text-sm mb-6">
-                <img src="https://via.placeholder.com/100" alt="Foto do Paciente"
-                  class="w-24 h-24 rounded-full border-2 border-blue-400">
-                <div class="ml-4">
-                  <h2 class="text-2xl font-semibold text-gray-800">{{.Name}}</h2>
-                  <p class="text-sm text-gray-600">Paciente desde 2021</p>
-                  <p class="text-sm text-gray-600">{{.ID}}</p>
-                </div>
-              </div>
-
-              <!-- Seção de Informações Básicas -->
-              <div
-                x-data="{ editing: false, idade: '30 anos', genero: 'Masculino', telefone: '(11) 98765-4321', email: '{{.Data.Email}}' }"
-                class="relative mb-6">
-                <button @click="editing = !editing"
-                  class="absolute top-0 right-0 p-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-full active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-                  aria-label="Edit">
-                  <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z">
-                    </path>
-                  </svg>
-                </button>
-                <h3 class="text-xl font-semibold text-gray-800 mb-2">Informações Básicas</h3>
-                <div class="grid grid-cols-2 gap-4">
-                  <div>
-                    <p class="text-xs text-gray-600 dark:text-gray-400">Idade:</p>
-                    <template x-if="!editing">
-                      <p class="text-gray-800" x-text="idade"></p>
-                    </template>
-                    <template x-if="editing">
-                      <input type="text" x-model="idade" class="text-gray-800 border rounded p-1">
-                    </template>
-                  </div>
-                  <div>
-                    <p class="text-xs text-gray-600 dark:text-gray-400">Gênero:</p>
-                    <template x-if="!editing">
-                      <p class="text-gray-800" x-text="genero"></p>
-                    </template>
-                    <template x-if="editing">
-                      <input type="text" x-model="genero" class="text-gray-800 border rounded p-1">
-                    </template>
-                  </div>
-                  <div>
-                    <p class="text-xs text-gray-600 dark:text-gray-400">Telefone:</p>
-                    <template x-if="!editing">
-                      <p class="text-gray-800" x-text="telefone"></p>
-                    </template>
-                    <template x-if="editing">
-                      <input type="text" x-model="telefone" class="text-gray-800 border rounded p-1">
-                    </template>
-                  </div>
-                  <div>
-                    <p class="text-xs text-gray-600 dark:text-gray-400">Email:</p>
-                    <template x-if="!editing">
-                      <p class="text-gray-800" x-text="email"></p>
-                    </template>
-                    <template x-if="editing">
-                      <input type="text" x-model="email" class="text-gray-800 border rounded p-1">
-                    </template>
-                  </div>
-                </div>
-
-                <!-- Botões de Ação de Edição -->
-                <div x-show="editing" class="flex justify-end gap-2 mt-4">
-                  <button @click="editing = false"
-                    class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                    Salvar
-                  </button>
-                  <button @click="editing = false"
-                    class="px-4 py-2 ml-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                    Cancelar
-                  </button>
-                </div>
-              </div>
-
-              <!-- Seção de Observações ou Notas -->
-              <div x-data="{ editing: false, observacao: 'Paciente apresenta'}" class="relative mb-6">
-                <button @click="editing = !editing"
-                  class="absolute top-0 right-0 p-1 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-full active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-                  aria-label="Edit">
-                  <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z">
-                    </path>
-                  </svg>
-                </button>
-                <h3 class="text-xl font-semibold text-gray-800 mb-2">Observações</h3>
-                <template x-if="!editing">
-                  <p class="text-gray-700" x-text="observacao"></p>
-                </template>
-                <template x-if="editing">
-                  <textarea x-model="observacao"
-                    class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-textarea focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-                    rows="3">
-                  </textarea>
-                </template>
-                <!-- Botões de Ação de Edição -->
-                <div x-show="editing" class="flex justify-end gap-2 mt-4">
-                  <button @click="editing = false"
-                    class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                    Salvar
-                  </button>
-                  <button @click="editing = false"
-                    class="px-4 py-2 ml-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                    Cancelar
-                  </button>
-                </div>
-
-                <div x-show="true" class="flex justify-end">
-                  <button
-                    class="px-4 py-2 ml-23 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                    Arquivos
-                  </button>
-                </div>
-              </div>
-
-
+      <!-- Seção de Informações Básicas -->
+      <div class="py-4">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Informações Básicas</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="space-y-2">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nome</label>
+              <p class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{.Data.Name}}</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+              <p class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{.Data.Email}}</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">CPF</label>
+              <p class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{.Data.CPF}}</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Telefone</label>
+              <p class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{.Data.Phone}}</p>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
+              <p class="mt-1">
+                {{if .Data.Active}}
+                <span class="px-2 py-1 text-xs font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
+                  Ativo
+                </span>
+                {{else}}
+                <span class="px-2 py-1 text-xs font-semibold leading-tight text-red-700 bg-red-100 rounded-full dark:bg-red-700 dark:text-red-100">
+                  Inativo
+                </span>
+                {{end}}
+              </p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Data de Cadastro</label>
+              <p class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{.Data.CreatedAt.Format "02/01/2006"}}</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Última Atualização</label>
+              <p class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{.Data.UpdatedAt.Format "02/01/2006"}}</p>
             </div>
           </div>
         </div>
-        {{end}}
+      </div>
+
+      <!-- Botões de Ação -->
+      <div class="py-4 flex justify-end space-x-4">
+        <button class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+          Editar Informações
+        </button>
+        <button class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+          Ver Histórico
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+{{ end }}
