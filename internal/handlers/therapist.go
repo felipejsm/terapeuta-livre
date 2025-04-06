@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
-	"context"
 )
 
 type TherapistHandler struct {
@@ -25,7 +24,7 @@ func (h *TherapistHandler) HandleGetTherapist(w http.ResponseWriter, r *http.Req
 	if r.Method == http.MethodGet && r.URL.Path == "/therapist" {
 		// Recuperar o ID do terapeuta do contexto
 		therapistID := r.Context().Value("therapist_id").(uint)
-		
+
 		data, err := h.Service.GetTherapistDetail(int(therapistID))
 		if err != nil {
 			http.Error(w, "Terapeuta não encontrado", http.StatusNotFound)

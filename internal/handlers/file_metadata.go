@@ -8,20 +8,19 @@ import (
 	"io"
 	"net/http"
 	"strconv"
-	"context"
 )
 
-type FileMetadataHandler struct{
-	Service *services.FileMetadataService
+type FileMetadataHandler struct {
+	Service     *services.FileMetadataService
 	FileService *services.FileService
-	Template *template.Template
+	Template    *template.Template
 }
 
 func NewFileMetadataHandler(service *services.FileMetadataService, templates *template.Template, fileService *services.FileService) *FileMetadataHandler {
 	return &FileMetadataHandler{
-		Service: service,
+		Service:     service,
 		FileService: fileService,
-		Template: templates,
+		Template:    templates,
 	}
 }
 
@@ -32,7 +31,7 @@ func (h *FileMetadataHandler) HandleFileDownload(w http.ResponseWriter, r *http.
 		if err != nil {
 			fmt.Printf("Error during id conversion")
 		}
-		file, err := h.FileService.DownloadFile(id) 
+		file, err := h.FileService.DownloadFile(id)
 		if err != nil {
 			http.Error(w, "Arquivo não encontrado", http.StatusNotFound)
 			return
@@ -47,7 +46,7 @@ func (h *FileMetadataHandler) HandleFileDownload(w http.ResponseWriter, r *http.
 		_, err = w.Write(file.FileData)
 		if err != nil {
 			http.Error(w, "Erro ao enviar o arquivo", http.StatusInternalServerError)
-		}    
+		}
 		fmt.Printf("[DownloadFile] Func end")
 	} else {
 		fmt.Printf("File Delete begin")
@@ -64,7 +63,7 @@ func (h *FileMetadataHandler) HandleGetFileMetadata(w http.ResponseWriter, r *ht
 	if r.Method == http.MethodGet {
 		// Recuperar o ID do terapeuta do contexto
 		therapistID := r.Context().Value("therapist_id").(uint)
-		
+
 		fmt.Printf("GET")
 		data, err := h.Service.GetFilesMetadata(int(therapistID))
 		if err != nil {
@@ -74,7 +73,7 @@ func (h *FileMetadataHandler) HandleGetFileMetadata(w http.ResponseWriter, r *ht
 		templateName := "file_metadata"
 		err = h.Template.ExecuteTemplate(w, "layout.html", map[string]interface{}{
 			"TemplateName": templateName,
-			"Data": data,
+			"Data":         data,
 		})
 		if err != nil {
 			http.Error(w, "Erro ao renderizar o template", http.StatusInternalServerError)
@@ -82,9 +81,9 @@ func (h *FileMetadataHandler) HandleGetFileMetadata(w http.ResponseWriter, r *ht
 	} else if r.Method == http.MethodPost {
 		// Recuperar o ID do terapeuta do contexto
 		therapistID := r.Context().Value("therapist_id").(uint)
-		
+
 		fmt.Print("File intercepted")
-		r.Body = http.MaxBytesReader(w, r.Body, 10 << 20)
+		r.Body = http.MaxBytesReader(w, r.Body, 10<<20)
 		if err := r.ParseMultipartForm(10 << 20); err != nil {
 			http.Error(w, "O arquivo excede o limite de 10MB", http.StatusBadRequest)
 			return
