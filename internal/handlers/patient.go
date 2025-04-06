@@ -71,7 +71,7 @@ func (h *PatientHandler) HandleCreatePatient(w http.ResponseWriter, r *http.Requ
 		}
 
 		// Get the therapist ID from the context
-		therapistID := r.Context().Value("therapist_id").(uint)
+		//		therapistID := r.Context().Value("therapist_id").(uint)
 
 		// Create a new patient from the form data
 		// This will be implemented in the service layer
