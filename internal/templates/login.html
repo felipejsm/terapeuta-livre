@@ -47,6 +47,7 @@
   </body>
 </html>
 <script type="module">
+  import { register } from "https://esm.run/@teamhanko/hanko-elements";
    const { hanko } = await register("https://06c74591-1f06-4ddf-a9f4-06e5e87b00d3.hanko.io");
   hanko.onSessionCreated(() => {
       document.location.href = "https://terapeuta-livre.onrender.com/";
