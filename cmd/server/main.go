@@ -129,6 +129,8 @@ func SessionMiddleware(next http.HandlerFunc, therapistService *services.Therapi
 
 		// 3. Validar o token JWT
 		token, err := jwt.Parse([]byte(cookie.Value), jwt.WithKeySet(set))
+		claims, _ := token.AsMap(context.Background())
+		log.Printf("Todos os claims do token: %+v", claims)
 		if err != nil {
 			log.Println("Erro ao validar token:", err)
 			http.Redirect(w, r, "/login", http.StatusTemporaryRedirect)
