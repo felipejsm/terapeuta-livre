@@ -164,6 +164,8 @@ func SessionMiddleware(next http.HandlerFunc, therapistService *services.Therapi
 				return
 			}
 			log.Printf("Novo terapeuta criado: %s", therapist.Email)
+		} else {
+			log.Printf("User Found: %v", therapist)
 		}
 
 		// 6. Adicionar informações no contexto e continuar requisição
