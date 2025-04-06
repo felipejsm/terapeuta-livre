@@ -129,8 +129,7 @@ func SessionMiddleware(next http.HandlerFunc, therapistService *services.Therapi
 
 		// 3. Validar o token JWT
 		token, err := jwt.Parse([]byte(cookie.Value), jwt.WithKeySet(set))
-		claims, _ := token.AsMap(context.Background())
-		log.Printf("Todos os claims do token: %+v", claims)
+		
 		if err != nil {
 			log.Println("Erro ao validar token:", err)
 			http.Redirect(w, r, "/login", http.StatusTemporaryRedirect)
@@ -143,14 +142,19 @@ func SessionMiddleware(next http.HandlerFunc, therapistService *services.Therapi
 			http.Redirect(w, r, "/login", http.StatusTemporaryRedirect)
 			return
 		}
-
+		email, err := extractEmailFromToken(token)
+		if err != nil {
+			log.Println("Erro ao extrair email do token:", err)
+			http.Redirect(w, r, "/login", http.StatusTemporaryRedirect)
+			return
+		}
 		// 5. Verificar se o usuário existe no banco de dados
-		therapist, err := therapistService.FindByEmail(token.Subject())
+		therapist, err := therapistService.FindByEmail(email)
 		if err != nil {
 			// Se o usuário não existe, criar um novo terapeuta
 			newTherapist := models.Therapist{ // Usando o email como nome inicial
-				Email:    token.Subject(),
-				Login:    token.Subject(), // Usando o email como login
+				Email:    email,
+				Login:    email, // Usando o email como login
 				Password: "",              // Não precisamos de senha pois usamos Hanko
 			}
 			therapist, err = therapistService.CreateTherapist(newTherapist)
@@ -172,4 +176,25 @@ func SessionMiddleware(next http.HandlerFunc, therapistService *services.Therapi
 		// Chama o handler original
 		next(w, r.WithContext(ctx))
 	}
+}
+
+func extractEmailFromToken(token jwt.Token) (string, error) {
+	claims, err := token.AsMap(context.Background())
+	if err != nil {
+		return "", fmt.Errorf("erro ao extrair claims: %w", err)
+	}
+
+	// Verifica se o campo email existe e é um map
+	emailMap, ok := claims["email"].(map[string]interface{})
+	if !ok {
+		return "", fmt.Errorf("campo 'email' não encontrado ou formato inválido")
+	}
+
+	// Extrai o endereço de email
+	email, ok := emailMap["address"].(string)
+	if !ok {
+		return "", fmt.Errorf("campo 'address' não encontrado ou não é string")
+	}
+
+	return email, nil
 }
